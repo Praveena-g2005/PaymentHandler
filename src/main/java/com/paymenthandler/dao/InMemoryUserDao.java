@@ -4,6 +4,11 @@ import com.paymenthandler.model.*;
 import java.util.*;
 import java.util.concurrent.atomic.*;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
+
+@ApplicationScoped //CDI bean
+@Named("InmemoryDao")
 public class InMemoryUserDao implements UserDao{
     Map<Long,User> users = new HashMap<>();
     AtomicLong generateid = new AtomicLong(1);

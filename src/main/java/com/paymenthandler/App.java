@@ -1,13 +1,15 @@
 package com.paymenthandler;
 
-import com.paymenthandler.dao.InMemoryUserDao;
+import javax.enterprise.inject.se.SeContainer;
+import javax.enterprise.inject.se.SeContainerInitializer;
+
 import com.paymenthandler.model.User;
 import com.paymenthandler.service.UserService;
 
 public class App {
     public static void main(String[] args) {
-        InMemoryUserDao dao = new InMemoryUserDao();
-        UserService service=new UserService(dao);
+        SeContainer container =SeContainerInitializer.newInstance().initialize();
+        UserService service=container.select(UserService.class).get();
 
         User u1=service.createUser("Praveena", "praveena@gmail.com");
         User u2=service.createUser("Alice", "alice@gmail.com");
@@ -29,5 +31,9 @@ public class App {
 
         System.out.println("\nAll users now:");
         service.getUsernameStartsWith('P').forEach(System.out::println);
+
+        System.out.println("Random id : "+service.getRandomId());
+
+        container.close();
     }
 }

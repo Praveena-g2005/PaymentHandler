@@ -2,14 +2,26 @@ package com.paymenthandler.service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import com.paymenthandler.dao.*;
 import com.paymenthandler.model.*;
 
+@ApplicationScoped
 public class UserService {
+
+    @Inject
+    @Named("InmemoryDao")
     private UserDao dao;
 
-    public UserService(UserDao dao) {
-        this.dao = dao;
+    @Inject // produces
+    private String randomid; 
+
+    public String getRandomId(){
+        return randomid;
     }
 
     public User createUser(String name, String email) {

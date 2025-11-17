@@ -21,7 +21,7 @@ public class UserServiceTest {
     @Before
     public void setup() {
         dao = mock(UserDao.class);        // creating mock object
-        userservice = new UserService(dao); // injecting mock DAO into service
+        userservice = new UserService(); // injecting mock DAO into service
     }
 
     @Test
@@ -108,7 +108,6 @@ public class UserServiceTest {
 
         //Verify
         verify(dao).deleteUser(1L);
-
     }
     @After
     public void afterTest() {
