@@ -496,8 +496,3 @@ GET http://localhost:8080/paymenthandler/
 - JSP with JSTL tags
 
 ---
-
-**Developer:** Praveena
-**Purpose:** AeroParker Java EE Learning Project
-**Manager:** [Manager Name]
-**Date:** December 2025
