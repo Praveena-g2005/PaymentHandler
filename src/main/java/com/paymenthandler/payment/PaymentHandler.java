@@ -6,7 +6,7 @@ import com.paymenthandler.model.PaymentResponse;
 
 public interface PaymentHandler {
     /**
-     * Process the payment. Implementation must NOT persist transactions.
+     * Process the payment.
      * Return a PaymentResponse (success/failure + message).
      */
     PaymentResponse handle(Payment payment);

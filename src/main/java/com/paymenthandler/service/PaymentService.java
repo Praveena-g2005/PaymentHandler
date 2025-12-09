@@ -3,7 +3,6 @@ package com.paymenthandler.service;
 import com.paymenthandler.model.*;
 import com.paymenthandler.payment.PaymentHandler;
 import com.paymenthandler.dao.*;
-import com.paymenthandler.service.BalanceService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -25,29 +24,35 @@ public class PaymentService {
 
     /**
      * process payment request:
-     *  - check handler by method
-     *  - attempt withdraw from balance (if wallet-like) or just simulate
-     *  - create transaction entry
+     * - check handler by method
+     * - attempt withdraw from balance (if wallet-like) or just simulate
+     * - create transaction entry
      */
     public PaymentResponse process(PaymentRequest request) {
         // find handler
         PaymentHandler selected = null;
         for (PaymentHandler h : handlers) {
-            if (h.getMethod().equalsIgnoreCase(request.getMethod())) { selected = h; break; }
+            if (h.getMethod().equalsIgnoreCase(request.getMethod())) {
+                selected = h;
+                break;
+            }
         }
-        if (selected == null) return new PaymentResponse(false, "Unsupported payment method: " + request.getMethod(), null);
+        if (selected == null)
+            return new PaymentResponse(false, "Unsupported payment method: " + request.getMethod(), null);
 
-        // for demo: if method == "wallet", require balance withdraw; otherwise assume external gateway charges succeed
+        // for demo: if method == "wallet", require balance withdraw; otherwise assume
+        // external gateway charges succeed
         if ("wallet".equalsIgnoreCase(request.getMethod())) {
             Optional<String> withdrawErr = balanceService.withdraw(request.getPayerUserId(), request.getAmount());
             if (withdrawErr.isPresent()) {
                 return new PaymentResponse(false, withdrawErr.get(), null);
             }
+            balanceService.deposit(request.getPayeeUserId(), request.getAmount());
         }
 
         // build Payment object
         Payment payment = Payment.builder()
-                .payerUserId(request.getPayerUserId())
+                 .payerUserId(request.getPayerUserId())
                 .payeeUserId(request.getPayeeUserId())
                 .amount(request.getAmount())
                 .method(request.getMethod())
@@ -59,7 +64,8 @@ public class PaymentService {
 
         // persist transaction if success
         if (response.isSuccess()) {
-            Transaction tx = new Transaction(null, payment.getPayerUserId(), payment.getPayeeUserId(), payment.getAmount(), payment.getMethod(), payment.getCreatedAt());
+            Transaction tx = new Transaction(null, payment.getPayerUserId(), payment.getPayeeUserId(),
+                    payment.getAmount(), payment.getMethod(), payment.getCreatedAt());
             Transaction saved = transactionDao.save(tx);
             return new PaymentResponse(true, response.getMessage(), saved.getId());
         } else {

@@ -14,15 +14,8 @@ import com.paymenthandler.model.*;
 public class UserService {
 
     @Inject
-    @Named("InmemoryDao")
+    @Named("jooqUserDao")
     private UserDao dao;
-
-    @Inject // produces
-    private String randomid; 
-
-    public String getRandomId(){
-        return randomid;
-    }
 
     public User createUser(String name, String email) {
         return dao.createUser(new User(null, name, email));
@@ -31,6 +24,11 @@ public class UserService {
     public Optional<User> getUserById(Long id) {
         return dao.findById(id);
     }
+
+    public List<User> findAllUsers() {
+        return dao.findAllUsers();
+    }
+
     // Used Stream + Method Reference + filter + collect
     public List<String> getUsernameStartsWith(char s) {
         List<String> users = dao.findAllUsers().stream().map(User::getName).filter(n -> n.startsWith(String.valueOf(s)))

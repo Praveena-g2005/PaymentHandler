@@ -13,7 +13,6 @@ public class UpiPaymentHandler implements PaymentHandler {
     @Override
     public PaymentResponse handle(Payment payment){
         System.out.println("[UPI] processing payment: " + payment);
-        // simulate success
         return new PaymentResponse(true, "UPI transfer successful", null);
     }
     @Override public String getMethod(){ return "upi"; }

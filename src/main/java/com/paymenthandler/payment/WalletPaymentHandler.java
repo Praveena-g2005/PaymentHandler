@@ -12,7 +12,6 @@ public class WalletPaymentHandler implements PaymentHandler {
     @Override
     public PaymentResponse handle(Payment payment){
         System.out.println("[WALLET] processing payment: " + payment);
-        // wallet-specific logic could be here
         return new PaymentResponse(true, "Wallet payment completed", null);
     }
     @Override public String getMethod(){ return "wallet"; }

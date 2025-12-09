@@ -9,6 +9,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 import org.junit.*;
@@ -19,9 +20,14 @@ public class UserServiceTest {
     private UserService userservice;
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         dao = mock(UserDao.class);        // creating mock object
-        userservice = new UserService(); // injecting mock DAO into service
+        userservice = new UserService();  // create service instance
+
+        // Inject mock DAO using reflection (since CDI not available in tests)
+        Field daoField = UserService.class.getDeclaredField("dao");
+        daoField.setAccessible(true);
+        daoField.set(userservice, dao);
     }
 
     @Test
@@ -72,7 +78,6 @@ public class UserServiceTest {
 
         //Verify
         verify(dao).findById(77L);
-
     }
 
     @Test
