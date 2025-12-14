@@ -4,6 +4,7 @@ com\paymenthandler\model\User.class
 com\paymenthandler\model\PaymentRequest.class
 com\paymenthandler\service\PaymentService.class
 com\paymenthandler\model\Payment.class
+com\paymenthandler\web\DatabaseInitListener.class
 com\paymenthandler\model\Transaction.class
 com\paymenthandler\persistence\DatabaseConnectionFactory.class
 com\paymenthandler\service\BalanceService.class

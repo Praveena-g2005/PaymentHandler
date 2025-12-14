@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.paymenthandler.UserServiceTest" time="1.244" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.paymenthandler.UserServiceTest" time="1.329" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
     <property name="java.specification.version" value="11"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="C:\Users\PG\Documents\paymenthandler\target\test-classes;C:\Users\PG\Documents\paymenthandler\target\classes;C:\Users\PG\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\PG\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\PG\.m2\repository\org\mockito\mockito-core\5.11.0\mockito-core-5.11.0.jar;C:\Users\PG\.m2\repository\net\bytebuddy\byte-buddy\1.14.12\byte-buddy-1.14.12.jar;C:\Users\PG\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.12\byte-buddy-agent-1.14.12.jar;C:\Users\PG\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\PG\.m2\repository\javax\enterprise\cdi-api\2.0.SP1\cdi-api-2.0.SP1.jar;C:\Users\PG\.m2\repository\javax\el\javax.el-api\3.0.0\javax.el-api-3.0.0.jar;C:\Users\PG\.m2\repository\javax\interceptor\javax.interceptor-api\1.2\javax.interceptor-api-1.2.jar;C:\Users\PG\.m2\repository\javax\inject\javax.inject\1\javax.inject-1.jar;C:\Users\PG\.m2\repository\org\jboss\weld\se\weld-se-core\3.1.9.Final\weld-se-core-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\environment\weld-environment-common\3.1.9.Final\weld-environment-common-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\weld-core-impl\3.1.9.Final\weld-core-impl-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\spec\javax\annotation\jboss-annotations-api_1.3_spec\2.0.1.Final\jboss-annotations-api_1.3_spec-2.0.1.Final.jar;C:\Users\PG\.m2\repository\org\jboss\spec\javax\interceptor\jboss-interceptors-api_1.2_spec\2.0.0.Final\jboss-interceptors-api_1.2_spec-2.0.0.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\probe\weld-probe-core\3.1.9.Final\weld-probe-core-3.1.9.Final.jar;C:\Users\PG\.m2\repository\jakarta\enterprise\jakarta.enterprise.cdi-api\2.0.2\jakarta.enterprise.cdi-api-2.0.2.jar;C:\Users\PG\.m2\repository\jakarta\inject\jakarta.inject-api\1.0\jakarta.inject-api-1.0.jar;C:\Users\PG\.m2\repository\org\jboss\classfilewriter\jboss-classfilewriter\1.2.5.Final\jboss-classfilewriter-1.2.5.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\servlet\weld-servlet-core\3.1.9.Final\weld-servlet-core-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\weld-spi\3.1.SP4\weld-spi-3.1.SP4.jar;C:\Users\PG\.m2\repository\org\jboss\weld\weld-api\3.1.SP4\weld-api-3.1.SP4.jar;C:\Users\PG\.m2\repository\org\jboss\weld\module\weld-jsf\3.1.9.Final\weld-jsf-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\module\weld-web\3.1.9.Final\weld-web-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\spec\javax\el\jboss-el-api_3.0_spec\2.0.0.Final\jboss-el-api_3.0_spec-2.0.0.Final.jar;C:\Users\PG\.m2\repository\org\jboss\logging\jboss-logging\3.4.3.Final\jboss-logging-3.4.3.Final.jar;C:\Users\PG\.m2\repository\org\jooq\jooq\3.14.16\jooq-3.14.16.jar;C:\Users\PG\.m2\repository\org\reactivestreams\reactive-streams\1.0.2\reactive-streams-1.0.2.jar;C:\Users\PG\.m2\repository\javax\xml\bind\jaxb-api\2.3.1\jaxb-api-2.3.1.jar;C:\Users\PG\.m2\repository\javax\activation\javax.activation-api\1.2.0\javax.activation-api-1.2.0.jar;C:\Users\PG\.m2\repository\com\h2database\h2\2.1.214\h2-2.1.214.jar;C:\Users\PG\.m2\repository\javax\servlet\javax.servlet-api\4.0.1\javax.servlet-api-4.0.1.jar;C:\Users\PG\.m2\repository\javax\servlet\jsp\javax.servlet.jsp-api\2.3.3\javax.servlet.jsp-api-2.3.3.jar;C:\Users\PG\.m2\repository\javax\servlet\jstl\1.2\jstl-1.2.jar;"/>
+    <property name="java.class.path" value="C:\Users\PG\Documents\paymenthandler\PaymentHandler\target\test-classes;C:\Users\PG\Documents\paymenthandler\PaymentHandler\target\classes;C:\Users\PG\.m2\repository\javax\enterprise\cdi-api\2.0.SP1\cdi-api-2.0.SP1.jar;C:\Users\PG\.m2\repository\javax\el\javax.el-api\3.0.0\javax.el-api-3.0.0.jar;C:\Users\PG\.m2\repository\javax\interceptor\javax.interceptor-api\1.2\javax.interceptor-api-1.2.jar;C:\Users\PG\.m2\repository\javax\inject\javax.inject\1\javax.inject-1.jar;C:\Users\PG\.m2\repository\org\jboss\weld\servlet\weld-servlet-shaded\3.1.9.Final\weld-servlet-shaded-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jooq\jooq\3.14.16\jooq-3.14.16.jar;C:\Users\PG\.m2\repository\org\reactivestreams\reactive-streams\1.0.2\reactive-streams-1.0.2.jar;C:\Users\PG\.m2\repository\javax\xml\bind\jaxb-api\2.3.1\jaxb-api-2.3.1.jar;C:\Users\PG\.m2\repository\javax\activation\javax.activation-api\1.2.0\javax.activation-api-1.2.0.jar;C:\Users\PG\.m2\repository\com\h2database\h2\2.1.214\h2-2.1.214.jar;C:\Users\PG\.m2\repository\javax\servlet\javax.servlet-api\4.0.1\javax.servlet-api-4.0.1.jar;C:\Users\PG\.m2\repository\javax\servlet\jsp\javax.servlet.jsp-api\2.3.3\javax.servlet.jsp-api-2.3.3.jar;C:\Users\PG\.m2\repository\javax\servlet\jstl\1.2\jstl-1.2.jar;C:\Users\PG\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\PG\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\PG\.m2\repository\org\mockito\mockito-core\5.11.0\mockito-core-5.11.0.jar;C:\Users\PG\.m2\repository\net\bytebuddy\byte-buddy\1.14.12\byte-buddy-1.14.12.jar;C:\Users\PG\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.12\byte-buddy-agent-1.14.12.jar;C:\Users\PG\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;"/>
     <property name="java.vm.vendor" value="Eclipse Adoptium"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
@@ -17,9 +17,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Eclipse Adoptium\jdk-11.0.28.6-hotspot\bin"/>
-    <property name="sun.java.command" value="C:\Users\PG\AppData\Local\Temp\surefire13689003573408676307\surefirebooter-20251209104635731_3.jar C:\Users\PG\AppData\Local\Temp\surefire13689003573408676307 2025-12-09T10-46-35_473-jvmRun1 surefire-20251209104635731_1tmp surefire_0-20251209104635731_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\PG\AppData\Local\Temp\surefire17069517740397676384\surefirebooter-20251212170110133_3.jar C:\Users\PG\AppData\Local\Temp\surefire17069517740397676384 2025-12-12T17-01-09_844-jvmRun1 surefire-20251212170110133_1tmp surefire_0-20251212170110133_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="C:\Users\PG\Documents\paymenthandler\target\test-classes;C:\Users\PG\Documents\paymenthandler\target\classes;C:\Users\PG\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\PG\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\PG\.m2\repository\org\mockito\mockito-core\5.11.0\mockito-core-5.11.0.jar;C:\Users\PG\.m2\repository\net\bytebuddy\byte-buddy\1.14.12\byte-buddy-1.14.12.jar;C:\Users\PG\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.12\byte-buddy-agent-1.14.12.jar;C:\Users\PG\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\PG\.m2\repository\javax\enterprise\cdi-api\2.0.SP1\cdi-api-2.0.SP1.jar;C:\Users\PG\.m2\repository\javax\el\javax.el-api\3.0.0\javax.el-api-3.0.0.jar;C:\Users\PG\.m2\repository\javax\interceptor\javax.interceptor-api\1.2\javax.interceptor-api-1.2.jar;C:\Users\PG\.m2\repository\javax\inject\javax.inject\1\javax.inject-1.jar;C:\Users\PG\.m2\repository\org\jboss\weld\se\weld-se-core\3.1.9.Final\weld-se-core-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\environment\weld-environment-common\3.1.9.Final\weld-environment-common-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\weld-core-impl\3.1.9.Final\weld-core-impl-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\spec\javax\annotation\jboss-annotations-api_1.3_spec\2.0.1.Final\jboss-annotations-api_1.3_spec-2.0.1.Final.jar;C:\Users\PG\.m2\repository\org\jboss\spec\javax\interceptor\jboss-interceptors-api_1.2_spec\2.0.0.Final\jboss-interceptors-api_1.2_spec-2.0.0.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\probe\weld-probe-core\3.1.9.Final\weld-probe-core-3.1.9.Final.jar;C:\Users\PG\.m2\repository\jakarta\enterprise\jakarta.enterprise.cdi-api\2.0.2\jakarta.enterprise.cdi-api-2.0.2.jar;C:\Users\PG\.m2\repository\jakarta\inject\jakarta.inject-api\1.0\jakarta.inject-api-1.0.jar;C:\Users\PG\.m2\repository\org\jboss\classfilewriter\jboss-classfilewriter\1.2.5.Final\jboss-classfilewriter-1.2.5.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\servlet\weld-servlet-core\3.1.9.Final\weld-servlet-core-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\weld-spi\3.1.SP4\weld-spi-3.1.SP4.jar;C:\Users\PG\.m2\repository\org\jboss\weld\weld-api\3.1.SP4\weld-api-3.1.SP4.jar;C:\Users\PG\.m2\repository\org\jboss\weld\module\weld-jsf\3.1.9.Final\weld-jsf-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\weld\module\weld-web\3.1.9.Final\weld-web-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jboss\spec\javax\el\jboss-el-api_3.0_spec\2.0.0.Final\jboss-el-api_3.0_spec-2.0.0.Final.jar;C:\Users\PG\.m2\repository\org\jboss\logging\jboss-logging\3.4.3.Final\jboss-logging-3.4.3.Final.jar;C:\Users\PG\.m2\repository\org\jooq\jooq\3.14.16\jooq-3.14.16.jar;C:\Users\PG\.m2\repository\org\reactivestreams\reactive-streams\1.0.2\reactive-streams-1.0.2.jar;C:\Users\PG\.m2\repository\javax\xml\bind\jaxb-api\2.3.1\jaxb-api-2.3.1.jar;C:\Users\PG\.m2\repository\javax\activation\javax.activation-api\1.2.0\javax.activation-api-1.2.0.jar;C:\Users\PG\.m2\repository\com\h2database\h2\2.1.214\h2-2.1.214.jar;C:\Users\PG\.m2\repository\javax\servlet\javax.servlet-api\4.0.1\javax.servlet-api-4.0.1.jar;C:\Users\PG\.m2\repository\javax\servlet\jsp\javax.servlet.jsp-api\2.3.3\javax.servlet.jsp-api-2.3.3.jar;C:\Users\PG\.m2\repository\javax\servlet\jstl\1.2\jstl-1.2.jar;"/>
+    <property name="surefire.test.class.path" value="C:\Users\PG\Documents\paymenthandler\PaymentHandler\target\test-classes;C:\Users\PG\Documents\paymenthandler\PaymentHandler\target\classes;C:\Users\PG\.m2\repository\javax\enterprise\cdi-api\2.0.SP1\cdi-api-2.0.SP1.jar;C:\Users\PG\.m2\repository\javax\el\javax.el-api\3.0.0\javax.el-api-3.0.0.jar;C:\Users\PG\.m2\repository\javax\interceptor\javax.interceptor-api\1.2\javax.interceptor-api-1.2.jar;C:\Users\PG\.m2\repository\javax\inject\javax.inject\1\javax.inject-1.jar;C:\Users\PG\.m2\repository\org\jboss\weld\servlet\weld-servlet-shaded\3.1.9.Final\weld-servlet-shaded-3.1.9.Final.jar;C:\Users\PG\.m2\repository\org\jooq\jooq\3.14.16\jooq-3.14.16.jar;C:\Users\PG\.m2\repository\org\reactivestreams\reactive-streams\1.0.2\reactive-streams-1.0.2.jar;C:\Users\PG\.m2\repository\javax\xml\bind\jaxb-api\2.3.1\jaxb-api-2.3.1.jar;C:\Users\PG\.m2\repository\javax\activation\javax.activation-api\1.2.0\javax.activation-api-1.2.0.jar;C:\Users\PG\.m2\repository\com\h2database\h2\2.1.214\h2-2.1.214.jar;C:\Users\PG\.m2\repository\javax\servlet\javax.servlet-api\4.0.1\javax.servlet-api-4.0.1.jar;C:\Users\PG\.m2\repository\javax\servlet\jsp\javax.servlet.jsp-api\2.3.3\javax.servlet.jsp-api-2.3.3.jar;C:\Users\PG\.m2\repository\javax\servlet\jstl\1.2\jstl-1.2.jar;C:\Users\PG\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\PG\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\PG\.m2\repository\org\mockito\mockito-core\5.11.0\mockito-core-5.11.0.jar;C:\Users\PG\.m2\repository\net\bytebuddy\byte-buddy\1.14.12\byte-buddy-1.14.12.jar;C:\Users\PG\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.12\byte-buddy-agent-1.14.12.jar;C:\Users\PG\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\PG"/>
     <property name="user.language" value="en"/>
@@ -27,13 +27,13 @@
     <property name="java.version.date" value="2025-07-15"/>
     <property name="java.home" value="C:\Program Files\Eclipse Adoptium\jdk-11.0.28.6-hotspot"/>
     <property name="file.separator" value="\"/>
-    <property name="basedir" value="C:\Users\PG\Documents\paymenthandler"/>
+    <property name="basedir" value="C:\Users\PG\Documents\paymenthandler\PaymentHandler"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\PG\AppData\Local\Temp\surefire13689003573408676307\surefirebooter-20251209104635731_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\PG\AppData\Local\Temp\surefire17069517740397676384\surefirebooter-20251212170110133_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="11.0.28+6"/>
@@ -48,7 +48,7 @@
     <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
     <property name="java.io.tmpdir" value="C:\Users\PG\AppData\Local\Temp\"/>
     <property name="java.version" value="11.0.28"/>
-    <property name="user.dir" value="C:\Users\PG\Documents\paymenthandler"/>
+    <property name="user.dir" value="C:\Users\PG\Documents\paymenthandler\PaymentHandler"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
@@ -61,23 +61,23 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="updateUserNameTest" classname="com.paymenthandler.UserServiceTest" time="1.185">
+  <testcase name="updateUserNameTest" classname="com.paymenthandler.UserServiceTest" time="1.256">
     <system-out><![CDATA[After Test
 ]]></system-out>
   </testcase>
-  <testcase name="createUserTest" classname="com.paymenthandler.UserServiceTest" time="0.0">
+  <testcase name="createUserTest" classname="com.paymenthandler.UserServiceTest" time="0">
     <system-out><![CDATA[After Test
 ]]></system-out>
   </testcase>
-  <testcase name="getUserById_NotFoundtest" classname="com.paymenthandler.UserServiceTest" time="0.008">
+  <testcase name="getUserById_NotFoundtest" classname="com.paymenthandler.UserServiceTest" time="0">
     <system-out><![CDATA[After Test
 ]]></system-out>
   </testcase>
-  <testcase name="deleteUserTest" classname="com.paymenthandler.UserServiceTest" time="0.002">
+  <testcase name="deleteUserTest" classname="com.paymenthandler.UserServiceTest" time="0.003">
     <system-out><![CDATA[After Test
 ]]></system-out>
   </testcase>
-  <testcase name="getUserByIdTest" classname="com.paymenthandler.UserServiceTest" time="0.0">
+  <testcase name="getUserByIdTest" classname="com.paymenthandler.UserServiceTest" time="0.001">
     <system-out><![CDATA[After Test
 ]]></system-out>
   </testcase>

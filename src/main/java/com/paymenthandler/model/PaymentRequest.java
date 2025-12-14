@@ -2,7 +2,7 @@ package com.paymenthandler.model;
 
 public class PaymentRequest {
     private final Long payerUserId;
-    private final Long payeeUserId; // optional
+    private final Long payeeUserId; 
     private final double amount;
     private final String method; // "card"/"upi"/"wallet"
 

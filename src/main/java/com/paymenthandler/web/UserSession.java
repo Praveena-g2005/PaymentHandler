@@ -6,12 +6,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 
-/**
- * Session-scoped bean for managing user session data
- * Demonstrates @SessionScoped - one instance per HTTP session
- *
- * Compare with @ApplicationScoped (one instance for entire app)
- */
+
 @Named("userSession")
 @SessionScoped
 public class UserSession implements Serializable {
@@ -53,7 +48,7 @@ public class UserSession implements Serializable {
         return currentUser != null ? currentUser.getId() : null;
     }
 
-    // Track page views per session (demonstrates session state)
+    // Track page views per session
     public void incrementPageViews() {
         this.pageViews++;
     }

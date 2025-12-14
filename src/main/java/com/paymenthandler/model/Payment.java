@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Payment {
     private final Long id;
     private final Long payerUserId;
-    private final Long payeeUserId; // optional (for transfers)
+    private final Long payeeUserId;
     private final double amount;
     private final String method; // "card", "upi", "wallet"
     private final Instant createdAt;

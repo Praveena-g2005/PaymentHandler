@@ -13,14 +13,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * User Management Servlet
- * Demonstrates:
- * - @WebServlet annotation for URL mapping
- * - doGet/doPost for HTTP request handling
- * - CDI @Inject in servlets
- * - Request/Response handling
- */
 @WebServlet(urlPatterns = {"/users", "/users/*"})
 public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -31,12 +23,6 @@ public class UserServlet extends HttpServlet {
     @Inject
     private UserSession userSession;
 
-    /**
-     * Handle GET requests
-     * - /users -> list all users
-     * - /users/123 -> show user detail
-     * - /users/create -> show create form
-     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -44,23 +30,17 @@ public class UserServlet extends HttpServlet {
     System.out.println(">>> userSession = " + userSession);
     System.out.println(">>> userService = " + userService);
 
-        // Track page views in session
         userSession.incrementPageViews();
 
         String pathInfo = req.getPathInfo();
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            // List all users
             List<User> users = userService.findAllUsers();
             req.setAttribute("users", users);
             req.getRequestDispatcher("/views/users.jsp").forward(req, resp);
 
-        } else if (pathInfo.equals("/create")) {
-            // Show create form
-            req.getRequestDispatcher("/views/user-form.jsp").forward(req, resp);
-            
         } else {
-            // Show single user detail
+            
             try {
                 Long userId = Long.parseLong(pathInfo.substring(1));
                 Optional<User> user = userService.getUserById(userId);
@@ -77,12 +57,6 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Handle POST requests
-     * - action=create -> create new user
-     * - action=update -> update user name
-     * - action=delete -> delete user
-     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -94,7 +68,6 @@ public class UserServlet extends HttpServlet {
 
             User user = userService.createUser(name, email);
 
-            // Redirect to user detail page
             resp.sendRedirect(req.getContextPath() + "/users/" + user.getId());
 
         } else if ("update".equals(action)) {
@@ -124,7 +97,6 @@ public class UserServlet extends HttpServlet {
             Optional<User> user = userService.getUserById(userId);
 
             if (user.isPresent()) {
-                // Set user in session (demonstrates @SessionScoped)
                 userSession.setCurrentUser(user.get());
                 resp.sendRedirect(req.getContextPath() + "/");
             } else {

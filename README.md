@@ -1,6 +1,6 @@
 #### Payment Handler API
 A Java EE web application for managing users, processing payments, and handling transactions with multiple payment methods (Card, UPI, Wallet).
-It demonstrates enterprise Java patterns including CDI, Servlets, JSP, JOOQ, and comprehensive design patterns for the AeroParker learning requirements.
+It demonstrates enterprise Java patterns including CDI, Servlets, JSP, JOOQ, and comprehensive design patterns.
 
 ---
 
@@ -62,6 +62,10 @@ transactions
 
 ---
 
+## Common Work Flow
+
+![Payment Handler Common Work Flow](images/work-flow.png)
+
 ## 📦 Endpoints
 
 ## 👥 User Management APIs
@@ -70,11 +74,9 @@ transactions
 | ------ | ---------------- | ------------------------------ |
 | GET    | `/users`         | Get all users (JSP view)       |
 | GET    | `/users/:id`     | Get user details by ID         |
-| GET    | `/users/create`  | Show user creation form        |
 | POST   | `/users`         | Create a new user              |
 | POST   | `/users`         | Update user (action=update)    |
 | POST   | `/users`         | Delete user (action=delete)    |
-| POST   | `/users`         | Login as user (action=login)   |
 
 ## 💰 Payment APIs
 
@@ -118,38 +120,7 @@ action=delete
 userId=1
 ```
 
-### 🔑 Login as User
-```
-POST /users
-Content-Type: application/x-www-form-urlencoded
-
-action=login
-userId=1
-```
-
 ## Payment Processing
-
-### 💳 Process Card Payment
-```
-POST /payment/process
-Content-Type: application/x-www-form-urlencoded
-
-payerId=1
-payeeId=2
-amount=100.50
-method=card
-```
-
-### 💵 Process UPI Payment
-```
-POST /payment/process
-Content-Type: application/x-www-form-urlencoded
-
-payerId=1
-payeeId=2
-amount=50.00
-method=upi
-```
 
 ### 💰 Process Wallet Payment
 ```
@@ -247,8 +218,8 @@ mvn clean package -DskipTests
 
 **4. Run the project:**
 ```bash
-# Run with Jetty
-mvn jetty:run
+# Run with cargo
+mvn cargo:run
 
 # Access application
 http://localhost:8080/paymenthandler/
@@ -266,70 +237,6 @@ Initial balances:
 - User 2: $500.00
 - User 3: $750.00
 ```
-
----
-
-## 🎨 Design Patterns
-
-### 1. Strategy Pattern
-**Location:** `com.paymenthandler.payment`
-
-Different payment methods as strategies:
-- `CardPaymentHandler` - Processes card payments
-- `UpiPaymentHandler` - Processes UPI payments
-- `WalletPaymentHandler` - Processes wallet transfers
-
-```java
-// Dynamic selection at runtime
-for (PaymentHandler h : handlers) {
-    if (h.getMethod().equals(request.getMethod())) {
-        selected = h;
-    }
-}
-```
-
-### 2. Builder Pattern
-**Location:** `Payment.java`
-
-Fluent API for object construction:
-```java
-Payment payment = Payment.builder()
-    .payerUserId(1L)
-    .amount(100.50)
-    .method("card")
-    .build();
-```
-
-### 3. DAO Pattern
-**Location:** `com.paymenthandler.dao`
-
-Abstracts data access:
-- Interface: `UserDao`
-- JOOQ Implementation: `JooqUserDao`
-- In-Memory Implementation: `InMemoryBalanceDao`
-
-### 4. Factory Pattern (CDI)
-**Location:** `DatabaseConnectionFactory.java`
-
-```java
-@Produces
-public DataSource getDataSource() {
-    return dataSource;
-}
-```
-
-### 5. Dependency Injection
-**Location:** All services
-
-```java
-@ApplicationScoped
-public class UserService {
-    @Inject
-    @Named("jooqUserDao")
-    private UserDao dao;
-}
-```
-
 ---
 
 ## 🚧 Notes
@@ -352,8 +259,6 @@ public class UserService {
 
 ⚠️ H2 is in-memory - data resets on restart
 
-⚠️ For production, switch to PostgreSQL/MySQL
-
 ---
 
 ## 🧪 Postman Testing
@@ -362,7 +267,7 @@ public class UserService {
 
 **1. Start the application**
 ```bash
-mvn jetty:run
+mvn cargo:run
 ```
 
 **2. GET `/users`**
@@ -397,44 +302,13 @@ Body (x-www-form-urlencoded):
   name: Updated Name
 ```
 
-**6. POST `/users` (Login)**
-→ Set user in session
-```
-POST http://localhost:8080/paymenthandler/users
-Body (x-www-form-urlencoded):
-  action: login
-  userId: 1
-```
-
-**7. GET `/payment/process`**
+**6. GET `/payment/process`**
 → View payment form
 ```
 GET http://localhost:8080/paymenthandler/payment/process
 ```
 
-**8. POST `/payment/process` (Card)**
-→ Process card payment
-```
-POST http://localhost:8080/paymenthandler/payment/process
-Body (x-www-form-urlencoded):
-  payerId: 1
-  payeeId: 2
-  amount: 100.50
-  method: card
-```
-
-**9. POST `/payment/process` (UPI)**
-→ Process UPI payment
-```
-POST http://localhost:8080/paymenthandler/payment/process
-Body (x-www-form-urlencoded):
-  payerId: 1
-  payeeId: 2
-  amount: 50.00
-  method: upi
-```
-
-**10. POST `/payment/process` (Wallet)**
+**7. POST `/payment/process` (Wallet)**
 → Process wallet payment (validates balance)
 ```
 POST http://localhost:8080/paymenthandler/payment/process
@@ -445,7 +319,7 @@ Body (x-www-form-urlencoded):
   method: wallet
 ```
 
-**11. POST `/users` (Delete)**
+**8. POST `/users` (Delete)**
 → Delete user
 ```
 POST http://localhost:8080/paymenthandler/users
@@ -454,7 +328,7 @@ Body (x-www-form-urlencoded):
   userId: 3
 ```
 
-**12. GET `/` (Homepage)**
+**9. GET `/` (Homepage)**
 → View application homepage with session info
 ```
 GET http://localhost:8080/paymenthandler/

@@ -12,10 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Payment Processing Servlet
- * Demonstrates HTTP request/response handling for payments
- */
 @WebServlet("/payment/process")
 public class PaymentServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -26,9 +22,6 @@ public class PaymentServlet extends HttpServlet {
     @Inject
     private UserSession userSession;
 
-    /**
-     * GET - Show payment form
-     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -37,16 +30,15 @@ public class PaymentServlet extends HttpServlet {
         req.getRequestDispatcher("/views/payment-form.jsp").forward(req, resp);
     }
 
-    /**
-     * POST - Process payment
-     */
+    // POST - Process payment
+     
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         try {
-            Long payerId = Long.parseLong(req.getParameter("payerid"));
-            String payeeIdStr = req.getParameter("payeeid");
+            Long payerId = Long.parseLong(req.getParameter("payerId"));
+            String payeeIdStr = req.getParameter("payeeId");
             Long payeeId = (payeeIdStr != null && !payeeIdStr.trim().isEmpty())
                 ? Long.parseLong(payeeIdStr)
                 : null;
@@ -59,7 +51,8 @@ public class PaymentServlet extends HttpServlet {
 
             PaymentResponse response = paymentService.process(paymentRequest);
 
-            req.setAttribute("response", response);
+            req.setAttribute("paymentRequest", paymentRequest); 
+            req.setAttribute("response", response); 
             req.getRequestDispatcher("/views/payment-result.jsp").forward(req, resp);
 
         } catch (NumberFormatException e) {

@@ -11,13 +11,16 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- CDI Listener for Weld -->
     <listener>
         <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
     </listener>
 
-    <!-- Session timeout (30 minutes) -->
+    <listener>
+        <listener-class>com.paymenthandler.web.DatabaseInitListener</listener-class>
+    </listener>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
+
 </web-app>

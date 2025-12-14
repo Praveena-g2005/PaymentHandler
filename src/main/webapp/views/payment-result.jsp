@@ -102,24 +102,24 @@
 
                     <div class="result-row">
                         <span class="label">Payer ID:</span>
-                        <span class="value">${response.payerId}</span>
+                        <span class="value">${paymentRequest.payerUserId}</span>
                     </div>
 
-                    <c:if test="${response.payeeId != null}">
+                    <c:if test="${paymentRequest.payeeUserId != null}">
                         <div class="result-row">
                             <span class="label">Payee ID:</span>
-                            <span class="value">${response.payeeId}</span>
+                            <span class="value">${paymentRequest.payeeUserId}</span>
                         </div>
                     </c:if>
 
                     <div class="result-row">
                         <span class="label">Amount:</span>
-                        <span class="value">$${response.amount}</span>
+                        <span class="value">$${paymentRequest.amount}</span>
                     </div>
 
                     <div class="result-row">
                         <span class="label">Payment Method:</span>
-                        <span class="value" style="text-transform: uppercase;">${response.method}</span>
+                        <span class="value" style="text-transform: uppercase;">${paymentRequest.method}</span>
                     </div>
 
                     <div class="result-row">
@@ -138,24 +138,24 @@
 
                     <div class="result-row">
                         <span class="label">Payer ID:</span>
-                        <span class="value">${response.payerId}</span>
+                        <span class="value">${paymentRequest.payerUserId}</span>
                     </div>
 
-                    <c:if test="${response.payeeId != null}">
+                    <c:if test="${paymentRequest.payeeUserId != null}">
                         <div class="result-row">
                             <span class="label">Payee ID:</span>
-                            <span class="value">${response.payeeId}</span>
+                            <span class="value">${paymentRequest.payeeUserId}</span>
                         </div>
                     </c:if>
 
                     <div class="result-row">
                         <span class="label">Amount:</span>
-                        <span class="value">$${response.amount}</span>
+                        <span class="value">$${paymentRequest.amount}</span>
                     </div>
 
                     <div class="result-row">
                         <span class="label">Payment Method:</span>
-                        <span class="value" style="text-transform: uppercase;">${response.method}</span>
+                        <span class="value" style="text-transform: uppercase;">${paymentRequest.method}</span>
                     </div>
 
                     <div class="result-row">

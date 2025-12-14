@@ -24,7 +24,6 @@ public class UserServiceTest {
         dao = mock(UserDao.class);        // creating mock object
         userservice = new UserService();  // create service instance
 
-        // Inject mock DAO using reflection (since CDI not available in tests)
         Field daoField = UserService.class.getDeclaredField("dao");
         daoField.setAccessible(true);
         daoField.set(userservice, dao);

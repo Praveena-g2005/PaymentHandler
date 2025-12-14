@@ -4,7 +4,7 @@ package com.paymenthandler.model;
 public class PaymentResponse {
     private final boolean success;
     private final String message;
-    private final Long transactionId; // optional
+    private final Long transactionId; 
 
     public PaymentResponse(boolean success, String message, Long transactionId){
         this.success = success; this.message = message; this.transactionId = transactionId;
