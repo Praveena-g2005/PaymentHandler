@@ -111,7 +111,6 @@
         <div class="actions">
             <h3>Actions</h3>
 
-            <!-- Update Username Form -->
             <form method="post" action="${pageContext.request.contextPath}/users" style="display: inline-block; margin-right: 10px;">
                 <input type="hidden" name="action" value="update">
                 <input type="hidden" name="userId" value="${user.id}">
@@ -120,14 +119,12 @@
                 <button type="submit" class="btn btn-primary">Update Name</button>
             </form>
 
-            <!-- Login as User -->
             <form method="post" action="${pageContext.request.contextPath}/users" style="display: inline-block; margin-right: 10px;">
                 <input type="hidden" name="action" value="login">
                 <input type="hidden" name="userId" value="${user.id}">
                 <button type="submit" class="btn btn-success">Login as User</button>
             </form>
 
-            <!-- Delete User -->
             <form method="post" action="${pageContext.request.contextPath}/users"
                   style="display: inline-block; margin-right: 10px;"
                   onsubmit="return confirm('Are you sure you want to delete this user?');">
@@ -136,7 +133,6 @@
                 <button type="submit" class="btn btn-danger">Delete User</button>
             </form>
 
-            <!-- Back to List -->
             <a href="${pageContext.request.contextPath}/users" class="btn btn-secondary">Back to Users List</a>
         </div>
     </div>

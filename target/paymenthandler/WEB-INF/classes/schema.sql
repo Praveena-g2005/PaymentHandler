@@ -1,6 +1,5 @@
 -- Payment Handler Database Schema
 
--- Users table
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL,
@@ -8,7 +7,6 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Balances table
 CREATE TABLE IF NOT EXISTS balances (
     user_id BIGINT PRIMARY KEY,
     amount DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
@@ -16,7 +14,6 @@ CREATE TABLE IF NOT EXISTS balances (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Transactions table
 CREATE TABLE IF NOT EXISTS transactions (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     payer_id BIGINT NOT NULL,
@@ -28,7 +25,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     FOREIGN KEY (payee_id) REFERENCES users(id)
 );
 
--- Insert sample data for testing
+-- Inserting sample data for testing
 INSERT INTO users (username, email) VALUES
     ('John Doe', 'john@example.com'),
     ('Jane Smith', 'jane@example.com'),

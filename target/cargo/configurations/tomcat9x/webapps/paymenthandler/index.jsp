@@ -50,7 +50,6 @@
     <div class="container">
         <h1>Payment Handler Application</h1>
 
-        <!-- Session Information (demonstrates @SessionScoped bean) -->
         <div class="session-info">
             <strong>Session Info:</strong>
             Logged in as: <strong>${userSession.userDisplayName}</strong> |

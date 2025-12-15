@@ -67,9 +67,9 @@
         <div class="info">
             <strong>Payment Methods Available:</strong>
             <ul style="margin: 10px 0; padding-left: 20px;">
-                <li><strong>card</strong> - Credit/Debit Card (No balance validation)</li>
-                <li><strong>upi</strong> - UPI Transfer (No balance validation)</li>
-                <li><strong>wallet</strong> - Wallet Transfer (Validates balance)</li>
+                <li><strong>card</strong> - Credit/Debit Card </li>
+                <li><strong>upi</strong> - UPI Transfer </li>
+                <li><strong>wallet</strong> - Wallet Transfer </li>
             </ul>
         </div>
 
@@ -84,7 +84,6 @@
                 <label for="payeeId">Payee ID </label>
                 <input type="number" id="payeeId" name="payeeId"
                        placeholder="Enter payee user ID " min="1">
-                <small style="color: #666;">Leave empty for one-way transactions</small>
             </div>
 
             <div class="form-group">

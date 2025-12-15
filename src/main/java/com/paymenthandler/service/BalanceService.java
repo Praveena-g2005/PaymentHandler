@@ -26,6 +26,7 @@ public class BalanceService {
     public Balance deposit(Long userId, double amount) {
         Optional<Balance> current = dao.getBalance(userId);
         double newAmount = current.map(b -> b.getAmount() + amount).orElse(amount);
+        System.out.println("Payee Balance after transaction : "+ newAmount);
         return dao.updateBalance(userId, newAmount);
     }
 
@@ -36,6 +37,7 @@ public class BalanceService {
         if (current.isEmpty()) return Optional.of("No balance found");
 
         double currentAmount = current.get().getAmount();
+        System.out.println("Payer Balance : "+ currentAmount);
         if (currentAmount < amount) return Optional.of("Insufficient funds");
 
         dao.updateBalance(userId, currentAmount - amount);

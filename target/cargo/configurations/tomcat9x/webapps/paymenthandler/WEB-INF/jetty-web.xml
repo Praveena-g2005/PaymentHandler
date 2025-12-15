@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
-    <!-- Enable annotation scanning -->
     <Call name="setAttribute">
         <Arg>org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern</Arg>
         <Arg>.*/.*\.jar$</Arg>
     </Call>
 
-    <!-- Enable CDI -->
     <Call name="setAttribute">
         <Arg>org.eclipse.jetty.containerInitializerStartupStarter</Arg>
         <Arg>true</Arg>
