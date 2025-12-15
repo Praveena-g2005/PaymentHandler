@@ -34,11 +34,14 @@ public class PaymentService {
             return new PaymentResponse(false, "Unsupported payment method: " + request.getMethod(), null);
 
         if ("wallet".equalsIgnoreCase(request.getMethod())) {
-            Optional<String> withdrawErr = balanceService.withdraw(request.getPayerUserId(), request.getAmount());
-            if (withdrawErr.isPresent()) {
-                return new PaymentResponse(false, withdrawErr.get(), null);
+            Optional<String> transferErr = balanceService.transferBalance(
+                request.getPayerUserId(),
+                request.getPayeeUserId(),
+                request.getAmount()
+            );
+            if (transferErr.isPresent()) {
+                return new PaymentResponse(false, transferErr.get(), null);
             }
-            balanceService.deposit(request.getPayeeUserId(), request.getAmount());
         }
 
         Payment payment = Payment.builder()

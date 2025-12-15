@@ -40,7 +40,6 @@ public class UserServlet extends HttpServlet {
             req.getRequestDispatcher("/views/users.jsp").forward(req, resp);
 
         } else {
-            
             try {
                 Long userId = Long.parseLong(pathInfo.substring(1));
                 Optional<User> user = userService.getUserById(userId);
@@ -60,51 +59,73 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String action = req.getParameter("action");
+        try {
+            String action = req.getParameter("action");
 
-        if ("create".equals(action)) {
-            String name = req.getParameter("name");
-            String email = req.getParameter("email");
+            if ("create".equals(action)) {
+                try {
+                    String name = req.getParameter("name");
+                    String email = req.getParameter("email");
+                    User user = userService.createUser(name, email);
+                    resp.sendRedirect(req.getContextPath() + "/users/" + user.getId());
+                } catch (IllegalArgumentException e) {
+                    resp.sendError(HttpServletResponse.SC_CONFLICT, e.getMessage());
+                }
 
-            User user = userService.createUser(name, email);
+            } else if ("update".equals(action)) {
+                try {
+                    Long userId = Long.parseLong(req.getParameter("userId"));
+                    String name = req.getParameter("name");
 
-            resp.sendRedirect(req.getContextPath() + "/users/" + user.getId());
+                    Optional<User> updated = userService.updateUserName(userId, name);
 
-        } else if ("update".equals(action)) {
-            Long userId = Long.parseLong(req.getParameter("userId"));
-            String name = req.getParameter("name");
+                    if (updated.isPresent()) {
+                        resp.sendRedirect(req.getContextPath() + "/users/" + userId);
+                    } else {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+                    }
+                } catch (NumberFormatException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user ID format");
+                }
 
-            Optional<User> updated = userService.updateUserName(userId, name);
+            } else if ("delete".equals(action)) {
+                try {
+                    Long userId = Long.parseLong(req.getParameter("userId"));
+                    boolean deleted = userService.deleteUser(userId);
 
-            if (updated.isPresent()) {
-                resp.sendRedirect(req.getContextPath() + "/users/" + userId);
+                    if (deleted) {
+                        resp.sendRedirect(req.getContextPath() + "/users");
+                    } else {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+                    }
+                } catch (NumberFormatException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user ID format");
+                }
+
+            } else if ("login".equals(action)) {
+                try {
+                    Long userId = Long.parseLong(req.getParameter("userId"));
+                    Optional<User> user = userService.getUserById(userId);
+
+                    if (user.isPresent()) {
+                        userSession.setCurrentUser(user.get());
+                        resp.sendRedirect(req.getContextPath() + "/");
+                    } else {
+                        resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+                    }
+                } catch (NumberFormatException e) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user ID format");
+                }
+
             } else {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
             }
 
-        } else if ("delete".equals(action)) {
-            Long userId = Long.parseLong(req.getParameter("userId"));
-            boolean deleted = userService.deleteUser(userId);
-
-            if (deleted) {
-                resp.sendRedirect(req.getContextPath() + "/users");
-            } else {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
-            }
-
-        } else if ("login".equals(action)) {
-            Long userId = Long.parseLong(req.getParameter("userId"));
-            Optional<User> user = userService.getUserById(userId);
-
-            if (user.isPresent()) {
-                userSession.setCurrentUser(user.get());
-                resp.sendRedirect(req.getContextPath() + "/");
-            } else {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
-            }
-
-        } else {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
+        } catch (RuntimeException e) {
+            System.err.println("Error processing user request: " + e.getMessage());
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                "An error occurred while processing your request");
         }
     }
 }

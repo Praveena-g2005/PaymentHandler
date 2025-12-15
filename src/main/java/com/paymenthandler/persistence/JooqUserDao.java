@@ -33,15 +33,23 @@ public class JooqUserDao implements UserDao {
             DSLContext ctx = DSL.using(conn, SQLDialect.H2);
 
             // JOOQ type-safe INSERT
-            Record record = ctx.insertInto(DSL.table("users"))
+            ctx.insertInto(DSL.table("users"))
                 .columns(DSL.field("username"), DSL.field("email"))
                 .values(user.getName(), user.getEmail())
-                .returningResult(
+                .execute();
+                
+            Record record = ctx.select(
                     DSL.field("id", Long.class),
                     DSL.field("username", String.class),
                     DSL.field("email", String.class)
                 )
+                .from(DSL.table("users"))
+                .where(DSL.field("email", String.class).eq(user.getEmail()))
                 .fetchOne();
+
+            if (record == null) {
+                throw new RuntimeException("Failed to retrieve created user");
+            }
 
             return new User(
                 record.get("id", Long.class),
@@ -54,11 +62,10 @@ public class JooqUserDao implements UserDao {
         }
     }
 
-    // Find user by ID
      
     @Override
     public Optional<User> findById(Long id) {
-        
+
         try (Connection conn = connectionFactory.getConnection()) {
             DSLContext ctx = DSL.using(conn, SQLDialect.H2);
 
@@ -84,6 +91,37 @@ public class JooqUserDao implements UserDao {
 
         } catch (SQLException e) {
             throw new RuntimeException("Failed to find user", e);
+        }
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+
+        try (Connection conn = connectionFactory.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.H2);
+
+            // JOOQ type-safe SELECT by email
+            Record record = ctx.select(
+                    DSL.field("id", Long.class),
+                    DSL.field("username", String.class),
+                    DSL.field("email", String.class)
+                )
+                .from(DSL.table("users"))
+                .where(DSL.field("email", String.class).eq(email))
+                .fetchOne();
+
+            if (record == null) {
+                return Optional.empty();
+            }
+
+            return Optional.of(new User(
+                record.get("id", Long.class),
+                record.get("username", String.class),
+                record.get("email", String.class)
+            ));
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find user by email", e);
         }
     }
 

@@ -7,6 +7,16 @@ public class PaymentRequest {
     private final String method; // "card"/"upi"/"wallet"
 
     public PaymentRequest(Long payerUserId, Long payeeUserId, double amount, String method){
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Payment amount must be greater than 0");
+        }
+        if (payerUserId == null) {
+            throw new IllegalArgumentException("Payer user ID cannot be null");
+        }
+        if (method == null || method.trim().isEmpty()) {
+            throw new IllegalArgumentException("Payment method cannot be empty");
+        }
+
         this.payerUserId = payerUserId;
         this.payeeUserId = payeeUserId;
         this.amount = amount;

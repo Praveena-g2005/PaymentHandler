@@ -6,6 +6,7 @@ import java.util.*;
 public interface UserDao {
     User createUser(User user);
     Optional<User> findById(Long id);
+    Optional<User> findByEmail(String email);
     List<User> findAllUsers();
     Optional<User> updateUser(User user);
     boolean deleteUser(Long id);

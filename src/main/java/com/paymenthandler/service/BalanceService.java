@@ -17,21 +17,25 @@ public class BalanceService {
     @Named("balanceDao")
     private BalanceDao dao;
 
-    // get balance
     public Optional<Balance> getBalance(Long userId) {
         return dao.getBalance(userId);
     }
 
-    // deposit
     public Balance deposit(Long userId, double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be greater than 0");
+        }
         Optional<Balance> current = dao.getBalance(userId);
         double newAmount = current.map(b -> b.getAmount() + amount).orElse(amount);
         System.out.println("Payee Balance after transaction : "+ newAmount);
         return dao.updateBalance(userId, newAmount);
     }
 
-    // withdraw
     public Optional<String> withdraw(Long userId, double amount) {
+        if (amount <= 0) {
+            return Optional.of("Withdrawal amount must be greater than 0");
+        }
+
         Optional<Balance> current = dao.getBalance(userId);
 
         if (current.isEmpty()) return Optional.of("No balance found");
@@ -42,5 +46,12 @@ public class BalanceService {
 
         dao.updateBalance(userId, currentAmount - amount);
         return Optional.empty();
+    }
+
+    public Optional<String> transferBalance(Long fromUserId, Long toUserId, double amount) {
+        if (amount <= 0) {
+            return Optional.of("Transfer amount must be greater than 0");
+        }
+        return dao.transferBalance(fromUserId, toUserId, amount);
     }
 }

@@ -51,13 +51,21 @@ public class PaymentServlet extends HttpServlet {
 
             PaymentResponse response = paymentService.process(paymentRequest);
 
-            req.setAttribute("paymentRequest", paymentRequest); 
-            req.setAttribute("response", response); 
+            req.setAttribute("paymentRequest", paymentRequest);
+            req.setAttribute("response", response);
             req.getRequestDispatcher("/views/payment-result.jsp").forward(req, resp);
 
         } catch (NumberFormatException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
                 "Invalid payment parameters: " + e.getMessage());
-        }
+        } catch (IllegalArgumentException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                "Validation error: " + e.getMessage());
+        } catch (RuntimeException e) {
+            System.err.println("Error processing payment: " + e.getMessage());
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                "An error occurred while processing payment");
+        } 
     }
 }

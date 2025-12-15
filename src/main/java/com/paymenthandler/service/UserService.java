@@ -18,6 +18,10 @@ public class UserService {
     private UserDao dao;
 
     public User createUser(String name, String email) {
+        Optional<User> existingUser = dao.findByEmail(email);
+        if (existingUser.isPresent()) {
+            throw new IllegalArgumentException("Email already exists: " + email);
+        }
         return dao.createUser(new User(null, name, email));
     }
 
@@ -29,13 +33,12 @@ public class UserService {
         return dao.findAllUsers();
     }
 
-    // Used Stream + Method Reference + filter + collect
     public List<String> getUsernameStartsWith(char s) {
         List<String> users = dao.findAllUsers().stream().map(User::getName).filter(n -> n.startsWith(String.valueOf(s)))
                 .collect(Collectors.toList());
         return users;
     }
-    //Used Optional map + method reference
+    
     public Optional<User> updateUserName(Long id, String name){
         return dao.findById(id).map(u-> new User(u.getId(),name,u.getEmail())).flatMap(dao::updateUser);
     }
