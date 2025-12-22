@@ -30,7 +30,6 @@ public class PaymentServlet extends HttpServlet {
         req.getRequestDispatcher("/views/payment-form.jsp").forward(req, resp);
     }
 
-    // POST - Process payment
      
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -38,6 +37,13 @@ public class PaymentServlet extends HttpServlet {
 
         try {
             Long payerId = Long.parseLong(req.getParameter("payerId"));
+
+            if (!userSession.isAdmin() && !payerId.equals(userSession.getCurrentUserId())) {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+                    "Access denied. You can only process payments for your own account.");
+                return;
+            }
+
             String payeeIdStr = req.getParameter("payeeId");
             Long payeeId = (payeeIdStr != null && !payeeIdStr.trim().isEmpty())
                 ? Long.parseLong(payeeIdStr)
@@ -66,6 +72,6 @@ public class PaymentServlet extends HttpServlet {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                 "An error occurred while processing payment");
-        } 
+        }
     }
 }

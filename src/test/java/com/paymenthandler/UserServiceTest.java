@@ -88,7 +88,7 @@ public class UserServiceTest {
         when(dao.findById(1L)).thenReturn(Optional.of(mockUser));
 
         //Act
-        Optional<User> user=userservice.updateUserName(1L, "Alice");
+        Optional<User> user=userservice.updateUser(1L, "Alice","Alice@gmail.com");
 
         //Asserts
         assertTrue(user.isPresent());

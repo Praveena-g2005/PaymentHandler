@@ -1,5 +1,6 @@
 package com.paymenthandler.web;
 
+import com.paymenthandler.model.Role;
 import com.paymenthandler.model.User;
 
 import javax.enterprise.context.SessionScoped;
@@ -21,7 +22,6 @@ public class UserSession implements Serializable {
         System.out.println("New UserSession created for HTTP session");
     }
 
-    // Getters and setters
     public User getCurrentUser() {
         return currentUser;
     }
@@ -48,12 +48,15 @@ public class UserSession implements Serializable {
         return currentUser != null ? currentUser.getId() : null;
     }
 
-    // Track page views per session
     public void incrementPageViews() {
         this.pageViews++;
     }
 
     public int getPageViews() {
         return pageViews;
+    }
+
+    public boolean isAdmin() {
+        return currentUser != null && currentUser.getRole() == Role.ADMIN;
     }
 }

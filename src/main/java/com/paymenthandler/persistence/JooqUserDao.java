@@ -1,6 +1,7 @@
 package com.paymenthandler.persistence;
 
 import com.paymenthandler.dao.UserDao;
+import com.paymenthandler.model.Role;
 import com.paymenthandler.model.User;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -32,29 +33,35 @@ public class JooqUserDao implements UserDao {
         try (Connection conn = connectionFactory.getConnection()) {
             DSLContext ctx = DSL.using(conn, SQLDialect.H2);
 
-            // JOOQ type-safe INSERT
+            // JOOQ type-safe INSERT 
             ctx.insertInto(DSL.table("users"))
-                .columns(DSL.field("username"), DSL.field("email"))
-                .values(user.getName(), user.getEmail())
+                .columns(DSL.field("username"), DSL.field("email"),
+                         DSL.field("password_hash"), DSL.field("role"))
+                .values(user.getName(), user.getEmail(),
+                        user.getPasswordHash(), user.getRole().name())
                 .execute();
-                
+
             Record record = ctx.select(
                     DSL.field("id", Long.class),
                     DSL.field("username", String.class),
-                    DSL.field("email", String.class)
+                    DSL.field("email", String.class),
+                    DSL.field("password_hash", String.class),
+                    DSL.field("role", String.class)
                 )
                 .from(DSL.table("users"))
                 .where(DSL.field("email", String.class).eq(user.getEmail()))
                 .fetchOne();
 
-            if (record == null) {
+            if(record == null) {
                 throw new RuntimeException("Failed to retrieve created user");
             }
 
             return new User(
                 record.get("id", Long.class),
                 record.get("username", String.class),
-                record.get("email", String.class)
+                record.get("email", String.class),
+                record.get("password_hash", String.class),
+                Role.fromString(record.get("role", String.class))
             );
 
         } catch (SQLException e) {
@@ -73,7 +80,9 @@ public class JooqUserDao implements UserDao {
             Record record = ctx.select(
                     DSL.field("id", Long.class),
                     DSL.field("username", String.class),
-                    DSL.field("email", String.class)
+                    DSL.field("email", String.class),
+                    DSL.field("password_hash", String.class),
+                    DSL.field("role", String.class)
                 )
                 .from(DSL.table("users"))
                 .where(DSL.field("id", Long.class).eq(id))
@@ -86,7 +95,9 @@ public class JooqUserDao implements UserDao {
             return Optional.of(new User(
                 record.get("id", Long.class),
                 record.get("username", String.class),
-                record.get("email", String.class)
+                record.get("email", String.class),
+                record.get("password_hash", String.class),
+                Role.fromString(record.get("role", String.class))
             ));
 
         } catch (SQLException e) {
@@ -104,7 +115,9 @@ public class JooqUserDao implements UserDao {
             Record record = ctx.select(
                     DSL.field("id", Long.class),
                     DSL.field("username", String.class),
-                    DSL.field("email", String.class)
+                    DSL.field("email", String.class),
+                    DSL.field("password_hash", String.class),
+                    DSL.field("role", String.class)
                 )
                 .from(DSL.table("users"))
                 .where(DSL.field("email", String.class).eq(email))
@@ -117,7 +130,9 @@ public class JooqUserDao implements UserDao {
             return Optional.of(new User(
                 record.get("id", Long.class),
                 record.get("username", String.class),
-                record.get("email", String.class)
+                record.get("email", String.class),
+                record.get("password_hash", String.class),
+                Role.fromString(record.get("role", String.class))
             ));
 
         } catch (SQLException e) {
@@ -133,17 +148,21 @@ public class JooqUserDao implements UserDao {
             return ctx.select(
                     DSL.field("id", Long.class),
                     DSL.field("username", String.class),
-                    DSL.field("email", String.class)
+                    DSL.field("email", String.class),
+                    DSL.field("password_hash", String.class),
+                    DSL.field("role", String.class)
                 )
                 .from(DSL.table("users"))
                 .fetch()
-                .stream()  
-                .map(record -> new User(  
+                .stream()
+                .map(record -> new User(
                     record.get("id", Long.class),
                     record.get("username", String.class),
-                    record.get("email", String.class)
+                    record.get("email", String.class),
+                    record.get("password_hash", String.class),
+                    Role.fromString(record.get("role", String.class))
                 ))
-                .collect(Collectors.toList()); 
+                .collect(Collectors.toList());
 
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch users", e);
@@ -165,6 +184,73 @@ public class JooqUserDao implements UserDao {
 
         } catch (SQLException e) {
             throw new RuntimeException("Failed to update user", e);
+        }
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        try (Connection conn = connectionFactory.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.H2);
+
+            Record record = ctx.select(
+                    DSL.field("id", Long.class),
+                    DSL.field("username", String.class),
+                    DSL.field("email", String.class),
+                    DSL.field("password_hash", String.class),
+                    DSL.field("role", String.class)
+                )
+                .from(DSL.table("users"))
+                .where(DSL.field("username", String.class).eq(username))
+                .fetchOne();
+
+            if (record == null) {
+                return Optional.empty();
+            }
+
+            return Optional.of(new User(
+                record.get("id", Long.class),
+                record.get("username", String.class),
+                record.get("email", String.class),
+                record.get("password_hash", String.class),
+                Role.fromString(record.get("role", String.class))
+            ));
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find user by username", e);
+        }
+    }
+
+    @Override
+    public Optional<User> findByUsernameOrEmail(String usernameOrEmail) {
+        try (Connection conn = connectionFactory.getConnection()) {
+            DSLContext ctx = DSL.using(conn, SQLDialect.H2);
+
+            Record record = ctx.select(
+                    DSL.field("id", Long.class),
+                    DSL.field("username", String.class),
+                    DSL.field("email", String.class),
+                    DSL.field("password_hash", String.class),
+                    DSL.field("role", String.class)
+                )
+                .from(DSL.table("users"))
+                .where(DSL.field("username", String.class).eq(usernameOrEmail)
+                    .or(DSL.field("email", String.class).eq(usernameOrEmail)))
+                .fetchOne();
+
+            if (record == null) {
+                return Optional.empty();
+            }
+
+            return Optional.of(new User(
+                record.get("id", Long.class),
+                record.get("username", String.class),
+                record.get("email", String.class),
+                record.get("password_hash", String.class),
+                Role.fromString(record.get("role", String.class))
+            ));
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find user by username or email", e);
         }
     }
 

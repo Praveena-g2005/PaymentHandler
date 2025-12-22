@@ -52,13 +52,16 @@
 
         <div class="session-info">
             <strong>Session Info:</strong>
-            Logged in as: <strong>${userSession.userDisplayName}</strong> |
-            Page views this session: <strong>${userSession.pageViews}</strong>
+            Logged in as: <strong>${userSession.userDisplayName}</strong>
+            <c:if test="${userSession.admin}"> (Admin)</c:if> |
+            Page views this session: <strong>${userSession.pageViews}</strong> |
+            <a href="${pageContext.request.contextPath}/auth/logout" style="color: #004085;">Logout</a>
         </div>
 
         <div class="card">
             <h2>User Management</h2>
             <p>Create, view, update, and delete users in the database</p>
+            <p><small><em>Note: Viewing all users requires Admin role</em></small></p>
             <a href="${pageContext.request.contextPath}/users" class="btn">Manage Users</a>
         </div>
 

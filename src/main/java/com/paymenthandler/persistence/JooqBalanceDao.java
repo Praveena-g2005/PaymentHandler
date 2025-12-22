@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @ApplicationScoped
 @Named("balanceDao")
+
 public class JooqBalanceDao implements BalanceDao {
 
     @Inject

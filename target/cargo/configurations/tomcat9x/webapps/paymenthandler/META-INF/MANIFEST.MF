@@ -3,5 +3,5 @@ Created-By: Maven WAR Plugin 3.3.2
 Build-Jdk-Spec: 11
 Class-Path: weld-servlet-shaded-3.1.9.Final.jar jooq-3.14.16.jar reactiv
  e-streams-1.0.2.jar jaxb-api-2.3.1.jar javax.activation-api-1.2.0.jar h
- 2-2.1.214.jar jstl-1.2.jar
+ 2-2.1.214.jar jstl-1.2.jar jbcrypt-0.4.jar
 

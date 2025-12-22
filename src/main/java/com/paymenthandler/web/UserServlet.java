@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@WebServlet(urlPatterns = {"/users", "/users/*"})
+@WebServlet(urlPatterns = { "/users", "/users/*" })
 public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -27,21 +27,31 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-    System.out.println(">>> userSession = " + userSession);
-    System.out.println(">>> userService = " + userService);
+        System.out.println(">>> userSession = " + userSession);
+        System.out.println(">>> userService = " + userService);
 
         userSession.incrementPageViews();
 
         String pathInfo = req.getPathInfo();
 
         if (pathInfo == null || pathInfo.equals("/")) {
+            if (!userSession.isAdmin()) {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+                        "Access denied, only admin can access");
+                return;
+            }
             List<User> users = userService.findAllUsers();
             req.setAttribute("users", users);
             req.getRequestDispatcher("/views/users.jsp").forward(req, resp);
-
         } else {
             try {
                 Long userId = Long.parseLong(pathInfo.substring(1));
+                if (!userSession.isAdmin() && !userId.equals(userSession.getCurrentUserId())) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+                            "Access denied. You can only view your own profile.");
+                    return;
+                }
+
                 Optional<User> user = userService.getUserById(userId);
 
                 if (user.isPresent()) {
@@ -63,6 +73,11 @@ public class UserServlet extends HttpServlet {
             String action = req.getParameter("action");
 
             if ("create".equals(action)) {
+                if (!userSession.isAdmin()) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+                            "Access denied. Admin privileges required.");
+                    return;
+                }
                 try {
                     String name = req.getParameter("name");
                     String email = req.getParameter("email");
@@ -75,9 +90,16 @@ public class UserServlet extends HttpServlet {
             } else if ("update".equals(action)) {
                 try {
                     Long userId = Long.parseLong(req.getParameter("userId"));
-                    String name = req.getParameter("name");
 
-                    Optional<User> updated = userService.updateUserName(userId, name);
+                    if (!userSession.isAdmin() && !userId.equals(userSession.getCurrentUserId())) {
+                        resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+                                "Access denied. You can only update your own profile.");
+                        return;
+                    }
+
+                    String name = req.getParameter("name");
+                    String email=req.getParameter("email");
+                    Optional<User> updated = userService.updateUser(userId, name,email);
 
                     if (updated.isPresent()) {
                         resp.sendRedirect(req.getContextPath() + "/users/" + userId);
@@ -89,27 +111,17 @@ public class UserServlet extends HttpServlet {
                 }
 
             } else if ("delete".equals(action)) {
+                if (!userSession.isAdmin()) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+                            "Access denied. Admin privileges required.");
+                    return;
+                }
                 try {
                     Long userId = Long.parseLong(req.getParameter("userId"));
                     boolean deleted = userService.deleteUser(userId);
 
                     if (deleted) {
                         resp.sendRedirect(req.getContextPath() + "/users");
-                    } else {
-                        resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
-                    }
-                } catch (NumberFormatException e) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user ID format");
-                }
-
-            } else if ("login".equals(action)) {
-                try {
-                    Long userId = Long.parseLong(req.getParameter("userId"));
-                    Optional<User> user = userService.getUserById(userId);
-
-                    if (user.isPresent()) {
-                        userSession.setCurrentUser(user.get());
-                        resp.sendRedirect(req.getContextPath() + "/");
                     } else {
                         resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
                     }
@@ -125,7 +137,7 @@ public class UserServlet extends HttpServlet {
             System.err.println("Error processing user request: " + e.getMessage());
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                "An error occurred while processing your request");
+                    "error occurred while processing your request");
         }
     }
 }
