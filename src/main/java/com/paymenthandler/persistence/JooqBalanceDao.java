@@ -7,20 +7,21 @@ import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
+import javax.inject.Singleton;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
 
-@ApplicationScoped
-@Named("balanceDao")
-
+@Singleton
 public class JooqBalanceDao implements BalanceDao {
 
+    private final DatabaseConnectionFactory connectionFactory;
+
     @Inject
-    private DatabaseConnectionFactory connectionFactory;
+    public JooqBalanceDao(DatabaseConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
 
     @Override
     public Optional<Balance> getBalance(Long userId) {

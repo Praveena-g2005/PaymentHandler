@@ -9,7 +9,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 import org.junit.*;
@@ -17,16 +16,14 @@ import org.junit.*;
 public class UserServiceTest {
 
     private UserDao dao;
+    private AuthenticationService authService;
     private UserService userservice;
 
     @Before
-    public void setup() throws Exception {
-        dao = mock(UserDao.class);        // creating mock object
-        userservice = new UserService();  // create service instance
-
-        Field daoField = UserService.class.getDeclaredField("dao");
-        daoField.setAccessible(true);
-        daoField.set(userservice, dao);
+    public void setup() {
+        dao = mock(UserDao.class);
+        authService = mock(AuthenticationService.class);
+        userservice = new UserService(dao, authService);
     }
 
     @Test

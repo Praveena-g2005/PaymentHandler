@@ -11,13 +11,25 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!-- Guice ServletContext Listener -->
     <listener>
-        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+        <listener-class>com.paymenthandler.config.PaymentHandlerGuiceServletContextListener</listener-class>
     </listener>
 
     <listener>
         <listener-class>com.paymenthandler.web.DatabaseInitListener</listener-class>
     </listener>
+
+    <!-- GuiceFilter to enable injection in servlets/filters -->
+    <filter>
+        <filter-name>guiceFilter</filter-name>
+        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>guiceFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <session-config>
         <session-timeout>30</session-timeout>

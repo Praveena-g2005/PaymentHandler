@@ -3,22 +3,24 @@ package com.paymenthandler.service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import com.paymenthandler.dao.*;
 import com.paymenthandler.model.*;
 
-@ApplicationScoped
+@Singleton
 public class UserService {
 
-    @Inject
-    @Named("jooqUserDao")
-    private UserDao dao;
+    private final UserDao dao;
+    private final AuthenticationService authService;
 
     @Inject
-    private AuthenticationService authService;
+    public UserService(@Named("jooqUserDao") UserDao dao, AuthenticationService authService) {
+        this.dao = dao;
+        this.authService = authService;
+    }
 
     public User createUser(String name, String email) {
         Optional<User> existingUser = dao.findByEmail(email);

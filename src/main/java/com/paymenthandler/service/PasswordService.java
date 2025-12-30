@@ -2,9 +2,9 @@ package com.paymenthandler.service;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Singleton;
 
-@ApplicationScoped
+@Singleton
 public class PasswordService {
 
     private static final int WORK_FACTOR = 12;

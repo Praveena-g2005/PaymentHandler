@@ -1,9 +1,7 @@
 package com.paymenthandler.persistence;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Named;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.sql.DataSource;
 
 import org.h2.jdbcx.JdbcDataSource;
@@ -17,7 +15,7 @@ import java.sql.Statement;
 import java.util.stream.Collectors;
 
 
-@ApplicationScoped
+@Singleton
 public class DatabaseConnectionFactory {
 
     private static final String DB_URL = "jdbc:h2:mem:paymenthandler;DB_CLOSE_DELAY=-1";
@@ -26,9 +24,13 @@ public class DatabaseConnectionFactory {
 
     private DataSource dataSource;
 
-    @PostConstruct
-    public void init() {
-        
+    @Inject
+    public DatabaseConnectionFactory() {
+        init();
+    }
+
+    private void init() {
+
         JdbcDataSource ds = new JdbcDataSource();
         ds.setURL(DB_URL);
         ds.setUser(DB_USER);
@@ -38,10 +40,6 @@ public class DatabaseConnectionFactory {
         initializeSchema();
     }
 
-    // CDI Producer method for DataSource
-     
-    @Produces
-    @Named("dataSource")
     public DataSource getDataSource() {
         return dataSource;
     }

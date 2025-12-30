@@ -3,11 +3,9 @@ package com.paymenthandler.payment;
 import com.paymenthandler.model.Payment;
 import com.paymenthandler.model.PaymentResponse;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import javax.inject.Singleton;
 
-@ApplicationScoped
-@Named("wallet")
+@Singleton
 public class WalletPaymentHandler implements PaymentHandler {
     @Override
     public PaymentResponse handle(Payment payment){

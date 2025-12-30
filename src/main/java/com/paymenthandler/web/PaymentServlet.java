@@ -1,41 +1,47 @@
 package com.paymenthandler.web;
 
+import com.google.inject.Provider;
 import com.paymenthandler.model.PaymentRequest;
 import com.paymenthandler.model.PaymentResponse;
 import com.paymenthandler.service.PaymentService;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/payment/process")
+@Singleton
 public class PaymentServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    @Inject
-    private PaymentService paymentService;
+    private final PaymentService paymentService;
+    private final Provider<UserSession> userSessionProvider;
 
     @Inject
-    private UserSession userSession;
+    public PaymentServlet(PaymentService paymentService, Provider<UserSession> userSessionProvider) {
+        this.paymentService = paymentService;
+        this.userSessionProvider = userSessionProvider;
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        UserSession userSession = userSessionProvider.get();
         userSession.incrementPageViews();
         req.getRequestDispatcher("/views/payment-form.jsp").forward(req, resp);
     }
 
-     
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         try {
+            UserSession userSession = userSessionProvider.get();
             Long payerId = Long.parseLong(req.getParameter("payerId"));
 
             if (!userSession.isAdmin() && !payerId.equals(userSession.getCurrentUserId())) {

@@ -1,11 +1,12 @@
 package com.paymenthandler.web;
 
+import com.google.inject.Provider;
 import com.paymenthandler.model.User;
 import com.paymenthandler.service.UserService;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,20 +14,24 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@WebServlet(urlPatterns = { "/users", "/users/*" })
+@Singleton
 public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    @Inject
-    private UserService userService;
+    private final UserService userService;
+    private final Provider<UserSession> userSessionProvider;
 
     @Inject
-    private UserSession userSession;
+    public UserServlet(UserService userService, Provider<UserSession> userSessionProvider) {
+        this.userService = userService;
+        this.userSessionProvider = userSessionProvider;
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        UserSession userSession = userSessionProvider.get();
         System.out.println(">>> userSession = " + userSession);
         System.out.println(">>> userService = " + userService);
 
@@ -70,6 +75,7 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         try {
+            UserSession userSession = userSessionProvider.get();
             String action = req.getParameter("action");
 
             if ("create".equals(action)) {

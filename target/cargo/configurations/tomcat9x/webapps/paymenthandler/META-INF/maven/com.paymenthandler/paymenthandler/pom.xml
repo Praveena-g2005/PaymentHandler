@@ -23,8 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Dependency Versions -->
-        <cdi.version>2.0.SP1</cdi.version>
-        <weld.version>3.1.9.Final</weld.version>
+        <guice.version>5.1.0</guice.version>
         <jooq.version>3.14.16</jooq.version>
         <h2.version>2.1.214</h2.version>
         <servlet.version>4.0.1</servlet.version>
@@ -41,17 +40,18 @@
     </properties>
 
     <dependencies>
+        <!-- Google Guice Core -->
         <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
-            <version>${cdi.version}</version>
-            <scope>provided</scope>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${guice.version}</version>
         </dependency>
 
+        <!-- Guice Servlet Extension -->
         <dependency>
-            <groupId>org.jboss.weld.servlet</groupId>
-            <artifactId>weld-servlet-shaded</artifactId>
-            <version>${weld.version}</version>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-servlet</artifactId>
+            <version>${guice.version}</version>
         </dependency>
 
         <dependency>
@@ -176,11 +176,6 @@
                         <groupId>org.eclipse.jetty</groupId>
                         <artifactId>jetty-plus</artifactId>
                         <version>9.4.53.v20231009</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.jboss.weld.servlet</groupId>
-                        <artifactId>weld-servlet-shaded</artifactId>
-                        <version>3.1.9.Final</version>
                     </dependency>
                 </dependencies>
             </plugin>

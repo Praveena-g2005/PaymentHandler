@@ -1,11 +1,12 @@
 package com.paymenthandler.web;
 
+import com.google.inject.Provider;
 import com.paymenthandler.model.User;
 import com.paymenthandler.service.UserService;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,19 +14,23 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(urlPatterns = { "/auth/login", "/auth/register", "/auth/logout" })
+@Singleton
 public class AuthenticationServlet extends HttpServlet {
 
-    @Inject
-    private UserService userService;
+    private final UserService userService;
+    private final Provider<UserSession> userSessionProvider;
 
     @Inject
-    private UserSession userSession;
+    public AuthenticationServlet(UserService userService, Provider<UserSession> userSessionProvider) {
+        this.userService = userService;
+        this.userSessionProvider = userSessionProvider;
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        UserSession userSession = userSessionProvider.get();
         String path = req.getServletPath();
 
         switch (path) {
@@ -97,6 +102,7 @@ public class AuthenticationServlet extends HttpServlet {
             Optional<User> userOpt = userService.authenticate(usernameOrEmail.trim(), password);
 
             if (userOpt.isPresent()) {
+                UserSession userSession = userSessionProvider.get();
                 userSession.setCurrentUser(userOpt.get());
                 resp.sendRedirect(req.getContextPath() + "/");
             } else {
@@ -146,6 +152,7 @@ public class AuthenticationServlet extends HttpServlet {
         try {
             com.paymenthandler.model.Role role = com.paymenthandler.model.Role.fromString(roleStr);
             User newUser = userService.createUserWithRole(username.trim(), email.trim(), password, role);
+            UserSession userSession = userSessionProvider.get();
             userSession.setCurrentUser(newUser);
             resp.sendRedirect(req.getContextPath() + "/");
         } catch (IllegalArgumentException e) {

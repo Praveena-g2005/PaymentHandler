@@ -7,21 +7,24 @@ import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@ApplicationScoped
+@Singleton
 public class JooqTransactionDao implements TransactionDao {
 
+    private final DatabaseConnectionFactory connectionFactory;
+
     @Inject
-    private DatabaseConnectionFactory connectionFactory;
+    public JooqTransactionDao(DatabaseConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
 
     @Override
     public Transaction save(Transaction tx) {

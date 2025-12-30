@@ -4,23 +4,25 @@ import com.paymenthandler.model.*;
 import com.paymenthandler.payment.PaymentHandler;
 import com.paymenthandler.dao.*;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.enterprise.inject.Instance;
+import javax.inject.Singleton;
 import java.time.Instant;
 import java.util.Optional;
+import java.util.Set;
 
-@ApplicationScoped
+@Singleton
 public class PaymentService {
 
-    @Inject
-    private BalanceService balanceService; 
+    private final BalanceService balanceService;
+    private final TransactionDao transactionDao;
+    private final Set<PaymentHandler> handlers;
 
     @Inject
-    private TransactionDao transactionDao;
-
-    @Inject
-    private Instance<PaymentHandler> handlers; 
+    public PaymentService(Set<PaymentHandler> handlers, BalanceService balanceService, TransactionDao transactionDao) {
+        this.handlers = handlers;
+        this.balanceService = balanceService;
+        this.transactionDao = transactionDao;
+    } 
 
     public PaymentResponse process(PaymentRequest request) {
         PaymentHandler selected = null;

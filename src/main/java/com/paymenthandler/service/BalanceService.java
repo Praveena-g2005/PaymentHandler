@@ -2,20 +2,23 @@ package com.paymenthandler.service;
 
 import java.util.*;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import com.paymenthandler.model.*;
 import com.paymenthandler.dao.*;
 
 
-@ApplicationScoped
+@Singleton
 public class BalanceService {
 
+    private final BalanceDao dao;
+
     @Inject
-    @Named("balanceDao")
-    private BalanceDao dao;
+    public BalanceService(@Named("balanceDao") BalanceDao dao) {
+        this.dao = dao;
+    }
 
     public Optional<Balance> getBalance(Long userId) {
         return dao.getBalance(userId);

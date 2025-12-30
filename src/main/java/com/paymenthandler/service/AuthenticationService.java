@@ -4,18 +4,22 @@ import com.paymenthandler.dao.UserDao;
 import com.paymenthandler.model.Role;
 import com.paymenthandler.model.User;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.util.Optional;
 
-@ApplicationScoped
+@Singleton
 public class AuthenticationService {
 
-    @Inject
-    private UserDao userDao;
+    private final UserDao userDao;
+    private final PasswordService passwordService;
 
     @Inject
-    private PasswordService passwordService;
+    public AuthenticationService(@Named("jooqUserDao") UserDao userDao, PasswordService passwordService) {
+        this.userDao = userDao;
+        this.passwordService = passwordService;
+    }
 
     public Optional<User> authenticate(String usernameOrEmail, String password) {
         if (usernameOrEmail == null || usernameOrEmail.trim().isEmpty()) {
