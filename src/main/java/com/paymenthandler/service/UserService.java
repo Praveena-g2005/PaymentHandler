@@ -8,6 +8,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import com.paymenthandler.dao.*;
+import com.paymenthandler.enums.Role;
 import com.paymenthandler.model.*;
 
 @Singleton

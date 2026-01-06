@@ -38,6 +38,9 @@ public class UserServlet extends HttpServlet {
         userSession.incrementPageViews();
 
         String pathInfo = req.getPathInfo();
+        System.out.println(">>> UserServlet: pathInfo = " + pathInfo);
+        System.out.println(">>> UserServlet: requestURI = " + req.getRequestURI());
+        System.out.println(">>> UserServlet: servletPath = " + req.getServletPath());
 
         if (pathInfo == null || pathInfo.equals("/")) {
             if (!userSession.isAdmin()) {
@@ -51,18 +54,25 @@ public class UserServlet extends HttpServlet {
         } else {
             try {
                 Long userId = Long.parseLong(pathInfo.substring(1));
+                System.out.println(">>> Looking for user ID: " + userId);
+
                 if (!userSession.isAdmin() && !userId.equals(userSession.getCurrentUserId())) {
+                    System.out.println(">>> Access denied - not admin and not own profile");
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                             "Access denied. You can only view your own profile.");
                     return;
                 }
 
                 Optional<User> user = userService.getUserById(userId);
+                System.out.println(">>> User found: " + user.isPresent());
 
                 if (user.isPresent()) {
+                    System.out.println(">>> Forwarding to user-detail.jsp for user: " + user.get().getName());
                     req.setAttribute("user", user.get());
                     req.getRequestDispatcher("/views/user-detail.jsp").forward(req, resp);
+                    System.out.println(">>> Forward completed");
                 } else {
+                    System.out.println(">>> User not found, returning 404");
                     resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
                 }
             } catch (NumberFormatException e) {

@@ -1,7 +1,7 @@
 package com.paymenthandler.service;
 
 import com.paymenthandler.dao.UserDao;
-import com.paymenthandler.model.Role;
+import com.paymenthandler.enums.Role;
 import com.paymenthandler.model.User;
 
 import javax.inject.Inject;

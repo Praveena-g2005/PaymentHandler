@@ -1,5 +1,7 @@
 package com.paymenthandler.model;
 
+import com.paymenthandler.enums.Role;
+
 public class User {
     private Long id;
     private String username;

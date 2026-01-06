@@ -1,6 +1,6 @@
 package com.paymenthandler.web;
 
-import com.paymenthandler.model.Role;
+import com.paymenthandler.enums.Role;
 import com.paymenthandler.model.User;
 
 import java.io.Serializable;

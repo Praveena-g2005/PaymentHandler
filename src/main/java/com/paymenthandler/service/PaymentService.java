@@ -16,12 +16,15 @@ public class PaymentService {
     private final BalanceService balanceService;
     private final TransactionDao transactionDao;
     private final Set<PaymentHandler> handlers;
+    private final FeeService feeService;
 
     @Inject
-    public PaymentService(Set<PaymentHandler> handlers, BalanceService balanceService, TransactionDao transactionDao) {
+    public PaymentService(Set<PaymentHandler> handlers, BalanceService balanceService,
+                         TransactionDao transactionDao, FeeService feeService) {
         this.handlers = handlers;
         this.balanceService = balanceService;
         this.transactionDao = transactionDao;
+        this.feeService = feeService;
     } 
 
     public PaymentResponse process(PaymentRequest request) {
@@ -33,23 +36,31 @@ public class PaymentService {
             }
         }
         if (selected == null)
-            return new PaymentResponse(false, "Unsupported payment method: " + request.getMethod(), null);
+            return new PaymentResponse(false, "Unsupported payment method: " + request.getMethod(), null, null, null);
+
+        FeeCalculationResult feeCalc = feeService.calculateFee(
+            request.getAmount(),
+            request.getMethod()
+        );
+        double baseAmount = feeCalc.getBaseAmount();      
+        double feeAmount = feeCalc.getFeeAmount();       
+        double totalAmount = feeCalc.getTotalAmount();   
 
         if ("wallet".equalsIgnoreCase(request.getMethod())) {
             Optional<String> transferErr = balanceService.transferBalance(
                 request.getPayerUserId(),
                 request.getPayeeUserId(),
-                request.getAmount()
+                totalAmount  
             );
             if (transferErr.isPresent()) {
-                return new PaymentResponse(false, transferErr.get(), null);
+                return new PaymentResponse(false, transferErr.get(), null, feeAmount, totalAmount);
             }
         }
 
         Payment payment = Payment.builder()
                 .payerUserId(request.getPayerUserId())
                 .payeeUserId(request.getPayeeUserId())
-                .amount(request.getAmount())
+                .amount(baseAmount)
                 .method(request.getMethod())
                 .createdAt(Instant.now())
                 .build();
@@ -57,12 +68,27 @@ public class PaymentService {
         PaymentResponse response = selected.handle(payment);
 
         if (response.isSuccess()) {
-            Transaction tx = new Transaction(null, payment.getPayerUserId(), payment.getPayeeUserId(),
-                    payment.getAmount(), payment.getMethod(), payment.getCreatedAt());
+            Transaction tx = new Transaction(
+                null,
+                payment.getPayerUserId(),
+                payment.getPayeeUserId(),
+                baseAmount,
+                payment.getMethod(),
+                payment.getCreatedAt(),
+                feeAmount,          
+                totalAmount             
+            );
             Transaction saved = transactionDao.save(tx);
-            return new PaymentResponse(true, response.getMessage(), saved.getId());
+
+            return new PaymentResponse(
+                true,
+                response.getMessage(),
+                saved.getId(),
+                feeAmount,
+                totalAmount
+            );
         } else {
-            return response;
+            return new PaymentResponse(false, response.getMessage(), null, feeAmount, totalAmount);
         }
     }
 }

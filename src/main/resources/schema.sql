@@ -22,9 +22,26 @@ CREATE TABLE IF NOT EXISTS transactions (
     payee_id BIGINT,
     amount DECIMAL(10, 2) NOT NULL,
     payment_method VARCHAR(50) NOT NULL,
+    fee_amount DECIMAL(10, 2) DEFAULT 0.00,
+    total_amount DECIMAL(10, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (payer_id) REFERENCES users(id) ON DELETE CASCADE ,
     FOREIGN KEY (payee_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- No hardcoded users - register users through the application
+CREATE TABLE IF NOT EXISTS fee_configurations (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    payment_method VARCHAR(50) NOT NULL UNIQUE,
+    fee_type VARCHAR(20) NOT NULL,
+    fee_value DECIMAL(10, 4) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_fee_type CHECK (fee_type IN ('PERCENTAGE', 'FIXED')),
+    CONSTRAINT chk_fee_value_positive CHECK (fee_value >= 0)
+);
+
+INSERT INTO fee_configurations (payment_method, fee_type, fee_value) VALUES
+    ('upi', 'PERCENTAGE', 2),
+    ('card', 'PERCENTAGE', 1),
+    ('wallet', 'PERCENTAGE', 0);
+

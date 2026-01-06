@@ -65,6 +65,13 @@ public class PaymentServlet extends HttpServlet {
 
             req.setAttribute("paymentRequest", paymentRequest);
             req.setAttribute("response", response);
+            
+            if (response.getFeeAmount() != null) {
+                req.setAttribute("feeAmount", String.format("%.2f", response.getFeeAmount()));
+            }
+            if (response.getTotalAmount() != null) {
+                req.setAttribute("totalAmount", String.format("%.2f", response.getTotalAmount()));
+            }
             req.getRequestDispatcher("/views/payment-result.jsp").forward(req, resp);
 
         } catch (NumberFormatException e) {

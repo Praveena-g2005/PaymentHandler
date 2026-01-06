@@ -150,7 +150,7 @@ public class AuthenticationServlet extends HttpServlet {
         }
 
         try {
-            com.paymenthandler.model.Role role = com.paymenthandler.model.Role.fromString(roleStr);
+            com.paymenthandler.enums.Role role = com.paymenthandler.enums.Role.fromString(roleStr);
             User newUser = userService.createUserWithRole(username.trim(), email.trim(), password, role);
             UserSession userSession = userSessionProvider.get();
             userSession.setCurrentUser(newUser);

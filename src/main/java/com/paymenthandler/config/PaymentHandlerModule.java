@@ -8,16 +8,22 @@ import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 
 import com.paymenthandler.dao.BalanceDao;
+import com.paymenthandler.dao.FeeConfigurationDao;
 import com.paymenthandler.dao.TransactionDao;
 import com.paymenthandler.dao.UserDao;
+import com.paymenthandler.dao.impl.BalanceDaoImpl;
+import com.paymenthandler.dao.impl.FeeConfigurationDaoImpl;
+import com.paymenthandler.dao.impl.TransactionDaoImpl;
+import com.paymenthandler.dao.impl.UserDaoImpl;
 import com.paymenthandler.payment.PaymentHandler;
 import com.paymenthandler.payment.WalletPaymentHandler;
+import com.paymenthandler.payment.gateway.MockPaymentGateway;
+import com.paymenthandler.payment.gateway.PaymentGateway;
 import com.paymenthandler.persistence.DatabaseConnectionFactory;
-import com.paymenthandler.persistence.JooqBalanceDao;
-import com.paymenthandler.persistence.JooqTransactionDao;
-import com.paymenthandler.persistence.JooqUserDao;
 import com.paymenthandler.service.AuthenticationService;
 import com.paymenthandler.service.BalanceService;
+import com.paymenthandler.service.DepositService;
+import com.paymenthandler.service.FeeService;
 import com.paymenthandler.service.PasswordService;
 import com.paymenthandler.service.PaymentService;
 import com.paymenthandler.service.UserService;
@@ -32,21 +38,31 @@ public class PaymentHandlerModule extends AbstractModule {
         bind(DatabaseConnectionFactory.class).in(Singleton.class);
         bind(UserDao.class)
             .annotatedWith(Names.named("jooqUserDao"))
-            .to(JooqUserDao.class)
+            .to(UserDaoImpl.class)
             .in(Singleton.class);
 
         bind(BalanceDao.class)
             .annotatedWith(Names.named("balanceDao"))
-            .to(JooqBalanceDao.class)
+            .to(BalanceDaoImpl.class)
             .in(Singleton.class);
 
         bind(TransactionDao.class)
-            .to(JooqTransactionDao.class)
+            .to(TransactionDaoImpl.class)
+            .in(Singleton.class);
+
+        bind(FeeConfigurationDao.class)
+            .to(FeeConfigurationDaoImpl.class)
+            .in(Singleton.class);
+
+        bind(PaymentGateway.class)
+            .to(MockPaymentGateway.class)
             .in(Singleton.class);
 
         // Services
         bind(UserService.class).in(Singleton.class);
         bind(BalanceService.class).in(Singleton.class);
+        bind(FeeService.class).in(Singleton.class);
+        bind(DepositService.class).in(Singleton.class);
         bind(PaymentService.class).in(Singleton.class);
         bind(AuthenticationService.class).in(Singleton.class);
         bind(PasswordService.class).in(Singleton.class);

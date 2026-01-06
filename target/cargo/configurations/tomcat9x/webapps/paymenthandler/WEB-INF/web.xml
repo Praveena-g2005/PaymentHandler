@@ -20,7 +20,6 @@
         <listener-class>com.paymenthandler.web.DatabaseInitListener</listener-class>
     </listener>
 
-    <!-- GuiceFilter to enable injection in servlets/filters -->
     <filter>
         <filter-name>guiceFilter</filter-name>
         <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
