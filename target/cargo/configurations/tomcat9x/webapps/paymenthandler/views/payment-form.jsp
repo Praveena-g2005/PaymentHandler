@@ -102,10 +102,115 @@
                 </select>
             </div>
 
+            <!-- Fee Breakdown Display -->
+            <div id="feeBreakdown" style="display: none; background: #fff3cd; padding: 15px; border-radius: 4px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+                <h3 style="margin-top: 0; color: #856404;">Transaction Summary</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 8px 0; color: #555;">Base Amount:</td>
+                        <td style="padding: 8px 0; text-align: right; font-weight: bold;">₹<span id="baseAmount">0.00</span></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 8px 0; color: #555;">Service Fee (<span id="feePercentage">0</span>):</td>
+                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #d9534f;">₹<span id="serviceFee">0.00</span></td>
+                    </tr>
+                    <tr style="border-bottom: 2px solid #856404;">
+                        <td style="padding: 12px 0; color: #333; font-size: 16px; font-weight: bold;">Total Amount:</td>
+                        <td style="padding: 12px 0; text-align: right; font-size: 18px; font-weight: bold; color: #28a745;">₹<span id="totalAmount">0.00</span></td>
+                    </tr>
+                </table>
+                <p style="margin: 10px 0 0 0; font-size: 12px; color: #856404;">
+                    <strong>Note:</strong> The total amount (including service fee) will be deducted from the payer's wallet.
+                </p>
+            </div>
+
             <button type="submit" class="btn">Process Payment</button>
             <a href="${pageContext.request.contextPath}/" class="btn btn-secondary"
                style="text-decoration: none; display: inline-block;">Cancel</a>
         </form>
     </div>
+
+    <script>
+        // Fee percentages from backend
+        const cardFee = parseFloat('${empty cardFeePercentage ? 0.1 : cardFeePercentage}');
+        const upiFee = parseFloat('${empty upiFeePercentage ? 0.02 : upiFeePercentage}');
+        const walletFee = parseFloat('${empty walletFeePercentage ? 0 : walletFeePercentage}');
+
+        const FEE_PERCENTAGES = {
+            'card': cardFee,
+            'upi': upiFee,
+            'wallet': walletFee
+        };
+
+        const MIN_FEE = 0.10; // Minimum fee in rupees
+
+        // Get form elements
+        const amountInput = document.getElementById('amount');
+        const methodSelect = document.getElementById('method');
+        const feeBreakdown = document.getElementById('feeBreakdown');
+
+        // Get display elements
+        const baseAmountSpan = document.getElementById('baseAmount');
+        const serviceFeeSpan = document.getElementById('serviceFee');
+        const totalAmountSpan = document.getElementById('totalAmount');
+        const feePercentageSpan = document.getElementById('feePercentage');
+
+        // Calculate fee based on amount and payment method
+        function calculateFee(baseAmount, paymentMethod) {
+            if (!baseAmount || baseAmount <= 0 || !paymentMethod) {
+                return 0;
+            }
+
+            const feePercentage = FEE_PERCENTAGES[paymentMethod] || 0;
+            // Convert percentage to decimal (0.1% -> 0.001)
+            let fee = baseAmount * (feePercentage / 100);
+
+            // Apply minimum fee (except for wallet which is always 0)
+            if (paymentMethod !== 'wallet' && fee > 0 && fee < MIN_FEE) {
+                fee = MIN_FEE;
+            }
+
+            // Round up to nearest paise (0.01)
+            fee = Math.ceil(fee * 100) / 100;
+
+            return fee;
+        }
+
+        // Update fee breakdown display
+        function updateFeeBreakdown() {
+            const amount = parseFloat(amountInput.value) || 0;
+            const method = methodSelect.value;
+
+            // Only show breakdown if both amount and method are selected
+            if (amount > 0 && method) {
+                const fee = calculateFee(amount, method);
+                const total = amount + fee;
+
+                // Get fee percentage for display
+                const feePercentage = FEE_PERCENTAGES[method] || 0;
+                const feePercentageText = feePercentage + '%';
+
+                // Update display values
+                baseAmountSpan.textContent = amount.toFixed(2);
+                serviceFeeSpan.textContent = fee.toFixed(2);
+                totalAmountSpan.textContent = total.toFixed(2);
+                feePercentageSpan.textContent = feePercentageText;
+
+                // Show the breakdown
+                feeBreakdown.style.display = 'block';
+            } else {
+                // Hide the breakdown if amount or method not selected
+                feeBreakdown.style.display = 'none';
+            }
+        }
+
+        // Add event listeners
+        amountInput.addEventListener('input', updateFeeBreakdown);
+        amountInput.addEventListener('change', updateFeeBreakdown);
+        methodSelect.addEventListener('change', updateFeeBreakdown);
+
+        // Initial update on page load (in case form has pre-filled values)
+        updateFeeBreakdown();
+    </script>
 </body>
 </html>

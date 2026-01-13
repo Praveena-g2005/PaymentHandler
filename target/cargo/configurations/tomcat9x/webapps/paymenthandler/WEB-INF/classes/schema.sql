@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS fee_configurations (
 );
 
 INSERT INTO fee_configurations (payment_method, fee_type, fee_value) VALUES
-    ('upi', 'PERCENTAGE', 0.0002),
-    ('card', 'PERCENTAGE', 0.001),
-    ('wallet', 'PERCENTAGE', 0.05);
+    ('upi', 'PERCENTAGE', 2),
+    ('card', 'PERCENTAGE', 1),
+    ('wallet', 'PERCENTAGE', 0);
 

@@ -1,9 +1,11 @@
 package com.paymenthandler.service;
 
 import com.paymenthandler.dao.FeeConfigurationDao;
+import com.paymenthandler.dto.request.FeeConfigurationRequest;
+import com.paymenthandler.dto.response.FeeCalculationResult;
 import com.paymenthandler.enums.FeeType;
 import com.paymenthandler.enums.PaymentMethod;
-import com.paymenthandler.model.*;
+import com.paymenthandler.model.FeeConfiguration;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -15,7 +17,6 @@ import java.util.logging.Logger;
 public class FeeService {
 
     private static final Logger LOGGER = Logger.getLogger(FeeService.class.getName());
-    private static final double MINIMUM_FEE = 0.10;
 
     private final FeeConfigurationDao feeConfigurationDao;
 
@@ -45,8 +46,7 @@ public class FeeService {
             feeAmount = baseAmount * method.getDefaultFeePercentage();
         }
 
-        feeAmount = Math.max(feeAmount, MINIMUM_FEE);
-        feeAmount = Math.ceil(feeAmount * 100) / 100.0;  
+        feeAmount = Math.round(feeAmount * 100) / 100.0;
 
         return new FeeCalculationResult(baseAmount, feeAmount);
     }

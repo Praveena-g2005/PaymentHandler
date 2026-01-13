@@ -102,10 +102,98 @@
                 </select>
             </div>
 
+            <!-- Fee Breakdown Display -->
+            <div id="feeBreakdown" style="display: none; background: #fff3cd; padding: 15px; border-radius: 4px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+                <h3 style="margin-top: 0; color: #856404;">Transaction Summary</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 8px 0; color: #555;">Base Amount:</td>
+                        <td style="padding: 8px 0; text-align: right; font-weight: bold;">₹<span id="baseAmount">0.00</span></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #ddd;">
+                        <td style="padding: 8px 0; color: #555;">Service Fee (<span id="feePercentage">0</span>):</td>
+                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #d9534f;">₹<span id="serviceFee">0.00</span></td>
+                    </tr>
+                    <tr style="border-bottom: 2px solid #856404;">
+                        <td style="padding: 12px 0; color: #333; font-size: 16px; font-weight: bold;">Total Amount:</td>
+                        <td style="padding: 12px 0; text-align: right; font-size: 18px; font-weight: bold; color: #28a745;">₹<span id="totalAmount">0.00</span></td>
+                    </tr>
+                </table>
+                <p style="margin: 10px 0 0 0; font-size: 12px; color: #856404;">
+                    <strong>Note:</strong> The total amount (including service fee) will be deducted from the payer's wallet.
+                </p>
+            </div>
+
             <button type="submit" class="btn">Process Payment</button>
             <a href="${pageContext.request.contextPath}/" class="btn btn-secondary"
                style="text-decoration: none; display: inline-block;">Cancel</a>
         </form>
     </div>
+
+    <script>
+        const cardFee = parseFloat('${empty cardFeePercentage ? 0.1 : cardFeePercentage}');
+        const upiFee = parseFloat('${empty upiFeePercentage ? 0.02 : upiFeePercentage}');
+        const walletFee = parseFloat('${empty walletFeePercentage ? 0 : walletFeePercentage}');
+
+        const FEE_PERCENTAGES = {
+            'card': cardFee,
+            'upi': upiFee,
+            'wallet': walletFee
+        };
+
+        // Getting form elements
+        const amountInput = document.getElementById('amount');
+        const methodSelect = document.getElementById('method');
+        const feeBreakdown = document.getElementById('feeBreakdown');
+
+        // Geting display elements
+        const baseAmountSpan = document.getElementById('baseAmount');
+        const serviceFeeSpan = document.getElementById('serviceFee');
+        const totalAmountSpan = document.getElementById('totalAmount');
+        const feePercentageSpan = document.getElementById('feePercentage');
+
+        // Calculate fee based on amount and payment method
+        function calculateFee(baseAmount, paymentMethod) {
+            if (!baseAmount || baseAmount <= 0 || !paymentMethod) {
+                return 0;
+            }
+
+            const feePercentage = FEE_PERCENTAGES[paymentMethod] || 0;
+            // Converting percentage to decimal
+            let fee = baseAmount * (feePercentage / 100);
+
+            // Rounding to 2 decimal places
+            fee = Math.round(fee * 100) / 100;
+
+            return fee;
+        }
+
+        function updateFeeBreakdown() {
+            const amount = parseFloat(amountInput.value) || 0;
+            const method = methodSelect.value;
+
+            if (amount > 0 && method) {
+                const fee = calculateFee(amount, method);
+                const total = amount + fee;
+
+                const feePercentage = FEE_PERCENTAGES[method] || 0;
+                const feePercentageText = feePercentage + '%';
+
+                baseAmountSpan.textContent = amount.toFixed(2);
+                serviceFeeSpan.textContent = fee.toFixed(2);
+                totalAmountSpan.textContent = total.toFixed(2);
+                feePercentageSpan.textContent = feePercentageText;
+
+                feeBreakdown.style.display = 'block';
+            } else {
+                feeBreakdown.style.display = 'none';
+            }
+        }
+
+        amountInput.addEventListener('input', updateFeeBreakdown);
+        amountInput.addEventListener('change', updateFeeBreakdown);
+        methodSelect.addEventListener('change', updateFeeBreakdown);
+        updateFeeBreakdown();
+    </script>
 </body>
 </html>

@@ -1,0 +1,22 @@
+# Build output
+target/
+
+# Version control
+.git/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+logs/
+
+# Docker files
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Documentation
+*.md

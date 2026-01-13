@@ -113,9 +113,23 @@
                     </c:if>
 
                     <div class="result-row">
-                        <span class="label">Amount:</span>
-                        <span class="value">$${paymentRequest.amount}</span>
+                        <span class="label">Base Amount:</span>
+                        <span class="value">₹${paymentRequest.amount}</span>
                     </div>
+
+                    <c:if test="${feeAmount != null}">
+                        <div class="result-row">
+                            <span class="label">Service Fee:</span>
+                            <span class="value" style="color: #d9534f;">₹${feeAmount}</span>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${totalAmount != null}">
+                        <div class="result-row" style="border-top: 2px solid #28a745; padding-top: 15px; margin-top: 10px;">
+                            <span class="label" style="font-size: 18px;">Total Amount Paid:</span>
+                            <span class="value" style="font-size: 20px; font-weight: bold; color: #28a745;">₹${totalAmount}</span>
+                        </div>
+                    </c:if>
 
                     <div class="result-row">
                         <span class="label">Payment Method:</span>
@@ -149,9 +163,23 @@
                     </c:if>
 
                     <div class="result-row">
-                        <span class="label">Amount:</span>
-                        <span class="value">$${paymentRequest.amount}</span>
+                        <span class="label">Base Amount:</span>
+                        <span class="value">₹${paymentRequest.amount}</span>
                     </div>
+
+                    <c:if test="${feeAmount != null}">
+                        <div class="result-row">
+                            <span class="label">Service Fee:</span>
+                            <span class="value" style="color: #d9534f;">₹${feeAmount}</span>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${totalAmount != null}">
+                        <div class="result-row">
+                            <span class="label">Total Amount:</span>
+                            <span class="value" style="font-weight: bold;">₹${totalAmount}</span>
+                        </div>
+                    </c:if>
 
                     <div class="result-row">
                         <span class="label">Payment Method:</span>

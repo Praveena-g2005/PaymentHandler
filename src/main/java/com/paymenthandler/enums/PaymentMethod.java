@@ -1,9 +1,9 @@
 package com.paymenthandler.enums;
 
 public enum PaymentMethod {
-    CARD("card", 0.001), 
-    UPI("upi", 0.0002),    
-    WALLET("wallet", 0.0);    
+    CARD("card", 2), 
+    UPI("upi", 1),    
+    WALLET("wallet", 1);    
 
     private final String value;
     private final double defaultFeePercentage;

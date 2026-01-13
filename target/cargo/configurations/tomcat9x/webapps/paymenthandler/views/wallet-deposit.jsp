@@ -53,12 +53,11 @@
     </form>
 
     <div class="test-cards">
-        <h3>Test Cards (Mock Gateway):</h3>
+        <h3>Test Cards </h3>
         <ul>
             <li><strong>Success:</strong> 4242 4242 4242 4242</li>
             <li><strong>Declined:</strong> 4000 0000 0000 0002</li>
         </ul>
-        <p><em>Note: These are test cards for development. No real money will be charged.</em></p>
     </div>
 
     <p><a href="${pageContext.request.contextPath}/payment/process">← Back to Payments</a></p>

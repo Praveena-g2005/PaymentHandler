@@ -1,9 +1,9 @@
 package com.paymenthandler.service;
 
 import com.paymenthandler.dao.TransactionDao;
+import com.paymenthandler.dto.request.DepositRequest;
+import com.paymenthandler.dto.response.DepositResponse;
 import com.paymenthandler.model.Balance;
-import com.paymenthandler.model.DepositRequest;
-import com.paymenthandler.model.DepositResponse;
 import com.paymenthandler.model.Transaction;
 import com.paymenthandler.payment.gateway.PaymentGateway;
 import com.paymenthandler.payment.gateway.PaymentGatewayResponse;

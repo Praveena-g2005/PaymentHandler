@@ -1,8 +1,8 @@
 package com.paymenthandler.web;
 
 import com.google.inject.Provider;
-import com.paymenthandler.model.PaymentRequest;
-import com.paymenthandler.model.PaymentResponse;
+import com.paymenthandler.dto.request.PaymentRequest;
+import com.paymenthandler.dto.response.PaymentResponse;
 import com.paymenthandler.service.PaymentService;
 
 import javax.inject.Inject;
@@ -19,11 +19,13 @@ public class PaymentServlet extends HttpServlet {
 
     private final PaymentService paymentService;
     private final Provider<UserSession> userSessionProvider;
+    private final com.paymenthandler.service.FeeService feeService;
 
     @Inject
-    public PaymentServlet(PaymentService paymentService, Provider<UserSession> userSessionProvider) {
+    public PaymentServlet(PaymentService paymentService, Provider<UserSession> userSessionProvider, com.paymenthandler.service.FeeService feeService) {
         this.paymentService = paymentService;
         this.userSessionProvider = userSessionProvider;
+        this.feeService = feeService;
     }
 
     @Override
@@ -32,7 +34,32 @@ public class PaymentServlet extends HttpServlet {
 
         UserSession userSession = userSessionProvider.get();
         userSession.incrementPageViews();
+
+        double cardFeePercentage = getFeePercentage("card");
+        double upiFeePercentage = getFeePercentage("upi");
+        double walletFeePercentage = getFeePercentage("wallet");
+
+        req.setAttribute("cardFeePercentage", cardFeePercentage);
+        req.setAttribute("upiFeePercentage", upiFeePercentage);
+        req.setAttribute("walletFeePercentage", walletFeePercentage);
+
         req.getRequestDispatcher("/views/payment-form.jsp").forward(req, resp);
+    }
+
+    private double getFeePercentage(String paymentMethod) {
+        java.util.Optional<com.paymenthandler.model.FeeConfiguration> feeConfig =
+            feeService.getFeeConfiguration(paymentMethod);
+
+        if (feeConfig.isPresent()) {
+            com.paymenthandler.model.FeeConfiguration config = feeConfig.get();
+            if (config.getFeeType() == com.paymenthandler.enums.FeeType.PERCENTAGE) {
+                return config.getFeeValue();
+            }
+        }
+
+        com.paymenthandler.enums.PaymentMethod method =
+            com.paymenthandler.enums.PaymentMethod.fromString(paymentMethod);
+        return method.getDefaultFeePercentage() * 100;
     }
 
 

@@ -1,8 +1,8 @@
 package com.paymenthandler.web;
 
 import com.google.inject.Provider;
+import com.paymenthandler.dto.request.FeeConfigurationRequest;
 import com.paymenthandler.model.FeeConfiguration;
-import com.paymenthandler.model.FeeConfigurationRequest;
 import com.paymenthandler.service.FeeService;
 
 import javax.inject.Inject;

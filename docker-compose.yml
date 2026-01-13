@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  paymenthandler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: paymenthandler:latest
+    container_name: paymenthandler-app
+    ports:
+      - "8080:8080"
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx1024m -Dfile.encoding=UTF-8
+    restart: unless-stopped

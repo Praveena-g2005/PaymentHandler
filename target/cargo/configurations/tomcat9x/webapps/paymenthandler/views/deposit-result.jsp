@@ -40,6 +40,9 @@
             <div class="info">
                 <strong>Error:</strong> <%= depositResponse.getMessage() %>
             </div>
+            <div class="info">
+                <strong>Current Balance:</strong> ₹<%= String.format("%.2f", depositResponse.getNewBalance()) %>
+            </div>
             <p>Please try again with a different card.</p>
         </div>
     <% } else { %>

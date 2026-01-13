@@ -1,7 +1,7 @@
 package com.paymenthandler.payment;
 
+import com.paymenthandler.dto.response.PaymentResponse;
 import com.paymenthandler.model.Payment;
-import com.paymenthandler.model.PaymentResponse;
 
 import javax.inject.Singleton;
 

@@ -1,8 +1,8 @@
 package com.paymenthandler.web;
 
 import com.google.inject.Provider;
-import com.paymenthandler.model.DepositRequest;
-import com.paymenthandler.model.DepositResponse;
+import com.paymenthandler.dto.request.DepositRequest;
+import com.paymenthandler.dto.response.DepositResponse;
 import com.paymenthandler.service.DepositService;
 
 import javax.inject.Inject;
